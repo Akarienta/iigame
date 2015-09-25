@@ -1,0 +1,16 @@
+<aside class="left-off-canvas-menu" ng-controller="MenuCtrl as menuVm">
+   <ul class="off-canvas-list">
+      <li><a ui-sref="check" translate>Home</a></li>
+      <li><a ui-sref="passwords" translate>Edit Passwords</a></li>
+      <li><a ui-sref="users" translate>Users Definition</a></li>
+   </ul>
+</aside>
+
+<aside class="right-off-canvas-menu" ng-controller="MenuCtrl as menuVm">
+   <ul class="off-canvas-list">
+      <li><a ui-sref="login" translate>Login</a></li>
+      <li><a ng-click="menuVm.logout()" translate>Logout</a></li>
+      <li><a ui-sref="settings" translate>Settings</a></li>
+      <li><a ui-sref="about" translate>About</a></li>
+   </ul>
+</aside>

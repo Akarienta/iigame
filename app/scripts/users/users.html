@@ -1,0 +1,79 @@
+<div ng-include="'alerts.html'"></div>
+
+<div class="row" ng-if="vm.loaded">
+   <div class="small-12 column text-center">
+      <h1 translate>Users Definition</h1>
+   </div>
+   <form name="vm.userForm" novalidate>
+      <div class="small-12 column">
+         <!-- login -->
+         <input name="login" ng-model="vm.newUser.login" type="text" placeholder="{{'Login' | translate}}"
+                class="radius" required ng-disabled="!vm.canAddUser"/>
+
+         <div ng-messages="vm.userForm.login.$error" ng-if="vm.userForm.$submitted || vm.userForm.login.$dirty"
+              ng-messages-multiple="ng-messages-multiple">
+            <div ng-message="required" translate>This field is mandatory.</div>
+         </div>
+      </div>
+      <div class="small-12 column">
+         <!-- mail -->
+         <input name="mail" ng-model="vm.newUser.mail" type="email" placeholder="{{'E-mail' | translate}}"
+                class="radius" required ng-disabled="!vm.canAddUser"/>
+
+         <div ng-messages="vm.userForm.mail.$error"
+              ng-if="vm.userForm.$submitted || vm.userForm.mail.$dirty"
+              ng-messages-multiple="ng-messages-multiple">
+            <div ng-message="required" translate>This field is mandatory.</div>
+            <div ng-message="email" translate>The text isn't a valid e-mail.</div>
+         </div>
+      </div>
+      <div class="small-12 column">
+         <!-- password -->
+         <input type="password" name="newPassword" placeholder="{{'Password' | translate}}"
+                ng-model="vm.newUser.password.new" class="radius" required ng-disabled="!vm.canAddUser"/>
+
+         <div ng-messages="vm.userForm.newPassword.$error"
+              ng-if="vm.userForm.$submitted || vm.userForm.newPassword.$dirty"
+              ng-messages-multiple="ng-messages-multiple">
+            <div ng-message="required" translate>This field is mandatory.</div>
+         </div>
+      </div>
+      <div class="small-12 column">
+         <!-- password match -->
+         <input type="password" name="confirmPassword" match-password="newPassword"
+                placeholder="{{'Password again' | translate}}" required ng-model="vm.newUser.password.confirm"
+                class="radius" ng-disabled="!vm.canAddUser"/>
+
+         <div ng-messages="vm.userForm.confirmPassword.$error"
+              ng-if="vm.userForm.$submitted || vm.userForm.confirmPassword.$dirty"
+              ng-messages-multiple="ng-messages-multiple">
+            <div ng-message="required">This field is mandatory.</div>
+            <div ng-message="passwordMatch">Your passwords don't match.</div>
+         </div>
+      </div>
+      <div class="small-12 column">
+         <button type="submit" class="expand radius" ng-click="vm.createUser()" translate ng-disabled="!vm.canAddUser">
+            Submit
+         </button>
+      </div>
+   </form>
+</div>
+
+<div class="row" ng-if="vm.loaded">
+   <div class="small-12 column">
+      <table>
+         <thead>
+            <tr>
+               <th translate>Login</th>
+               <th>Delete</th>
+            </tr>
+         </thead>
+         <tbody>
+            <tr ng-repeat="user in vm.users">
+               <td>{{user.login}}</td>
+               <td>click</td>
+            </tr>
+         </tbody>
+      </table>
+   </div>
+</div>

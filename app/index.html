@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<head>
+   <title translate translate-comment="app name">I&I Game</title>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+   <!-- build:css(.tmp) css/style.min.css -->
+   <link rel="stylesheet" href="styles/main.css">
+   <!-- endbuild -->
+</head>
+<body ng-app="iigame">
+   <div class="off-canvas-wrap">
+      <div class="inner-wrap">
+         <nav class="tab-bar">
+            <section class="left-small">
+               <a class="left-off-canvas-toggle menu-icon"><span></span></a>
+            </section>
+
+            <section class="right-small">
+               <a class="right-off-canvas-toggle menu-icon"><span></span></a>
+            </section>
+         </nav>
+
+         <div ng-include="'menu.html'"></div>
+
+         <section class="main-section">
+            <div class="row">
+               <div class="small-12 column" ui-view></div>
+            </div>
+         </section>
+
+         <a class="exit-off-canvas"></a>
+      </div>
+   </div>
+
+   <!-- build:js(.) js/vendor.min.js -->
+   <!-- bower:js -->
+   <script src="bower_components/jquery/dist/jquery.js"></script>
+   <script src="bower_components/angular/angular.js"></script>
+   <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+   <script src="bower_components/angular-foundation/mm-foundation-tpls.js"></script>
+   <script src="bower_components/angular-gettext/dist/angular-gettext.js"></script>
+   <script src="bower_components/angular-messages/angular-messages.js"></script>
+   <script src="bower_components/angular-password/angular-password.js"></script>
+   <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+   <script src="bower_components/firebase/firebase.js"></script>
+   <script src="bower_components/angularfire/dist/angularfire.js"></script>
+   <script src="bower_components/fastclick/lib/fastclick.js"></script>
+   <script src="bower_components/jquery.cookie/jquery.cookie.js"></script>
+   <script src="bower_components/jquery-placeholder/jquery.placeholder.js"></script>
+   <script src="bower_components/foundation/js/foundation.js"></script>
+   <!-- endbower -->
+   <!-- endbuild -->
+
+   <!-- build:js(.tmp) js/scripts.min.js -->
+   <script src="app.module.js"></script>
+   <script src="scripts/constants/constants.module.js"></script>
+   <script src="scripts/constants/roles.constant.js"></script>
+   <script src="scripts/alerts/alerts.module.js"></script>
+   <script src="scripts/alerts/alerts.service.js"></script>
+   <script src="scripts/alerts/alerts.controller.js"></script>
+   <script src="scripts/services/services.module.js"></script>
+   <script src="scripts/services/config.service.js"></script>
+   <script src="scripts/services/session.service.js"></script>
+   <script src="scripts/menu/menu.module.js"></script>
+   <script src="scripts/menu/menu.controller.js"></script>
+   <script src="scripts/check/check.module.js"></script>
+   <script src="scripts/check/check.controller.js"></script>
+   <script src="scripts/login/login.module.js"></script>
+   <script src="scripts/login/login.controller.js"></script>
+   <script src="scripts/passwords/passwords.module.js"></script>
+   <script src="scripts/passwords/passwords.controller.js"></script>
+   <script src="scripts/users/users.module.js"></script>
+   <script src="scripts/users/users.controller.js"></script>
+   <script src="scripts/settings/settings.module.js"></script>
+   <script src="scripts/settings/settings.controller.js"></script>
+   <script src="scripts/about/about.module.js"></script>
+   <script src="scripts/about/about.controller.js"></script>
+   <!-- endbuild -->
+
+</body>
+</html>

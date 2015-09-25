@@ -1,0 +1,18 @@
+{
+  "name": "iigame",
+  "description": "Sexual interrogation game, loosely inspired by The Administration Series from Manna Francis",
+  "version": "0.1.0",
+  "homepage": "https://github.com/Akarienta/iigame",
+  "license": "MIT",
+  "dependencies": {
+    "angular": "~1.4.6",
+    "angular-cookies": "~1.4.6",
+    "angular-foundation": "~0.6.0",
+    "angular-gettext": "~2.1.0",
+    "angular-messages": "~1.4.6",
+    "angular-password": "~1.0.1",
+    "angular-ui-router": "ui-router#~0.2.15",
+    "angularfire": "~1.1.2",
+    "foundation": "~5.5.2"
+  }
+}
