@@ -3,12 +3,17 @@
    <title translate translate-comment="app name">I&I Game</title>
    <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+   <!-- build:css(.) css/vendor.min.css -->
+   <!-- bower:css -->
+   <link rel="stylesheet" href="bower_components/foundation-icon-fonts/foundation-icons.css" />
+   <!-- endbower -->
+   <!-- endbuild -->
    <!-- build:css(.tmp) css/style.min.css -->
    <link rel="stylesheet" href="styles/main.css">
    <!-- endbuild -->
 </head>
-<body ng-app="iigame">
-   <div class="off-canvas-wrap">
+<body ng-app="iigame" ng-controller="CoreCtrl as coreVm" ng-strict-di>
+   <div class="off-canvas-wrap" ng-show="coreVm.loaded">
       <div class="inner-wrap">
          <nav class="tab-bar">
             <section class="left-small">
@@ -52,29 +57,38 @@
    <!-- endbuild -->
 
    <!-- build:js(.tmp) js/scripts.min.js -->
+   <script src="other/alertTpl.js"></script>
    <script src="app.module.js"></script>
-   <script src="scripts/constants/constants.module.js"></script>
-   <script src="scripts/constants/roles.constant.js"></script>
-   <script src="scripts/alerts/alerts.module.js"></script>
-   <script src="scripts/alerts/alerts.service.js"></script>
-   <script src="scripts/alerts/alerts.controller.js"></script>
-   <script src="scripts/services/services.module.js"></script>
-   <script src="scripts/services/config.service.js"></script>
-   <script src="scripts/services/session.service.js"></script>
-   <script src="scripts/menu/menu.module.js"></script>
-   <script src="scripts/menu/menu.controller.js"></script>
-   <script src="scripts/check/check.module.js"></script>
-   <script src="scripts/check/check.controller.js"></script>
-   <script src="scripts/login/login.module.js"></script>
-   <script src="scripts/login/login.controller.js"></script>
-   <script src="scripts/passwords/passwords.module.js"></script>
-   <script src="scripts/passwords/passwords.controller.js"></script>
-   <script src="scripts/users/users.module.js"></script>
-   <script src="scripts/users/users.controller.js"></script>
-   <script src="scripts/settings/settings.module.js"></script>
-   <script src="scripts/settings/settings.controller.js"></script>
-   <script src="scripts/about/about.module.js"></script>
-   <script src="scripts/about/about.controller.js"></script>
+   <script src="constants/constants.module.js"></script>
+   <script src="constants/roles.constant.js"></script>
+   <script src="constants/modules.constant.js"></script>
+   <script src="error/error.module.js"></script>
+   <script src="error/error.controller.js"></script>
+   <script src="alerts/alerts.module.js"></script>
+   <script src="alerts/alerts.service.js"></script>
+   <script src="alerts/alerts.controller.js"></script>
+   <script src="core/core.module.js"></script>
+   <script src="core/config.service.js"></script>
+   <script src="core/firebase.service.js"></script>
+   <script src="core/auth.service.js"></script>
+   <script src="core/session.service.js"></script>
+   <script src="core/core.controller.js"></script>
+   <script src="filters/filters.module.js"></script>
+   <script src="filters/object.filter.js"></script>
+   <script src="menu/menu.module.js"></script>
+   <script src="menu/menu.controller.js"></script>
+   <script src="check/check.module.js"></script>
+   <script src="check/check.controller.js"></script>
+   <script src="login/login.module.js"></script>
+   <script src="login/login.controller.js"></script>
+   <script src="passwords/passwords.module.js"></script>
+   <script src="passwords/passwords.controller.js"></script>
+   <script src="users/users.module.js"></script>
+   <script src="users/users.controller.js"></script>
+   <script src="settings/settings.module.js"></script>
+   <script src="settings/settings.controller.js"></script>
+   <script src="about/about.module.js"></script>
+   <script src="about/about.controller.js"></script>
    <!-- endbuild -->
 
 </body>

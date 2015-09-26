@@ -8,9 +8,11 @@
          'gettext',
          'firebase',
          'ngMessages',
+         'iigame.error',
          'iigame.constants',
          'iigame.alerts',
-         'iigame.services',
+         'iigame.core',
+         'iigame.filters',
          'iigame.menu',
          'iigame.check',
          'iigame.login',
@@ -30,13 +32,19 @@
    }
 
    /** @ngAnotate */
-   function run($rootScope, ConfigService, AlertsService, gettextCatalog) {
+   function run($rootScope, ConfigService, AlertsService, FirebaseService, SessionService, gettextCatalog) {
       ConfigService.getLanguage().then(function (lang) {
          gettextCatalog.setCurrentLanguage(lang);
       });
 
       $rootScope.$on('$stateChangeStart', function () {
          AlertsService.cleanAlerts();
+      });
+
+      SessionService.getFirebasePromise().then(function() {
+         FirebaseService.getAuth().$onAuth(function (authData) {
+            $rootScope.$broadcast('userUpdated', authData);
+         });
       });
    }
 

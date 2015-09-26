@@ -1,0 +1,127 @@
+<div ng-include="'spinner.html'" ng-if="!vm.loaded"></div>
+
+<div class="row" ng-if="vm.loaded">
+   <div class="small-12 column">
+      <h1 translate>Users Definition</h1>
+   </div>
+
+   <div ng-include="'alerts.html'"></div>
+
+   <div class="small-12 column">
+      <div class="panel radius" ng-show="!vm.addingUser" translate>
+         <p ng-if="!vm.canAddUser">
+            Users definition was disabled in Firebase. To allow it, please login into <a href="" ng-click="vm.goToFirebaseSecurity()" target="_blank">your
+            Firebase</a> and set rule <code>rules.accounts[.write]</code> to <code>true</code>.
+         </p>
+
+         <p ng-if="vm.canAddUser" translate>
+            Don't forget to disable users definition when you are done. You can do it in <a href="" ng-click="vm.goToFirebaseSecurity()" target="_blank">your
+            Firebase</a> by setting rule <code>rules.accounts[.write]</code> to <code>false</code>.
+         </p>
+      </div>
+   </div>
+
+   <div class="small-12 medium-6 large-4 left column" ng-if="!vm.addingUser && vm.canAddUser">
+      <button class="radius expand" ng-click="vm.addUser(true)" translate>Add user</button>
+   </div>
+
+   <div class="small-12 medium-6 large-4 left column" ng-if="vm.addingUser && vm.canAddUser">
+      <div class="panel form radius space-small-bottom">
+         <div class="row">
+            <form name="vm.userForm" novalidate>
+               <div class="small-12 column">
+                  <!-- login -->
+                  <input name="login" ng-model="vm.newUser.login" type="text" placeholder="{{'Login' | translate}}" class="radius" required
+                         ng-class="{'error': (vm.userForm.$submitted || vm.userForm.login.$dirty) && vm.userForm.login.$invalid}" ng-pattern="/^[a-z]+$/"/>
+
+               <span ng-messages="vm.userForm.login.$error" ng-if="vm.userForm.$submitted || vm.userForm.login.$dirty"
+                     ng-messages-multiple="ng-messages-multiple">
+                  <small class="error" ng-message="required" translate>This field is mandatory.</small>
+                  <small class="error" ng-message="pattern" translate>Only small letters are allowed.</small>
+               </span>
+               </div>
+               <div class="small-12 column">
+                  <!-- role -->
+                  <div ng-class="{'error': (vm.userForm.$submitted || vm.userForm.role.$dirty) && vm.userForm.role.$invalid}">
+                     <div class="inline">
+                        <input type="radio" name="role" value="dom" id="dom" ng-model="vm.newUser.role" ng-value="0" required/>
+                        <label for="dom">dom</label>
+                     </div>
+                     <div class="inline">
+                        <input type="radio" name="role" value="sub" id="sub" ng-model="vm.newUser.role" ng-value="1" required/>
+                        <label for="sub">sub</label>
+                     </div>
+                  </div>
+                  <div ng-messages="vm.userForm.role.$error" ng-if="vm.userForm.$submitted || vm.userForm.role.$dirty"
+                       ng-messages-multiple="ng-messages-multiple">
+                     <small class="error" ng-message="required" translate>This field is mandatory.</small>
+                  </div>
+               </div>
+               <div class="small-12 column">
+                  <!-- mail -->
+                  <input name="mail" ng-model="vm.newUser.mail" type="email" placeholder="{{'E-mail' | translate}}"
+                         class="radius" required ng-class="{'error': (vm.userForm.$submitted || vm.userForm.mail.$dirty) && vm.userForm.mail.$invalid}"/>
+
+                  <div ng-messages="vm.userForm.mail.$error" ng-if="vm.userForm.$submitted || vm.userForm.mail.$dirty"
+                       ng-messages-multiple="ng-messages-multiple">
+                     <small class="error" ng-message="required" translate>This field is mandatory.</small>
+                     <small class="error" ng-message="email" translate>The text isn't a valid e-mail.</small>
+                  </div>
+               </div>
+               <div class="small-12 column">
+                  <!-- password -->
+                  <input type="password" name="newPassword" placeholder="{{'Password' | translate}}" ng-model="vm.newUser.password.new" class="radius" required
+                         ng-class="{'error': (vm.userForm.$submitted || vm.userForm.newPassword.$dirty) && vm.userForm.newPassword.$invalid}"
+                         ng-pattern="/^[a-zA-Z0-9]+$/" ng-minlength="6">
+
+                  <div ng-messages="vm.userForm.newPassword.$error" ng-if="vm.userForm.$submitted || vm.userForm.newPassword.$dirty"
+                       ng-messages-multiple="ng-messages-multiple">
+                     <small class="error" ng-message="required" translate>This field is mandatory.</small>
+                     <small class="error" ng-message="pattern" translate>Only letters and digits are allowed.</small>
+                     <small class="error" ng-message="minlength" translate>Minimum length is 6.</small>
+                  </div>
+               </div>
+               <div class="small-12 column">
+                  <!-- password match -->
+                  <input type="password" name="confirmPassword" match-password="newPassword" placeholder="{{'Password again' | translate}}" required
+                         ng-model="vm.newUser.password.confirm" class="radius"
+                         ng-class="{'error': (vm.userForm.$submitted || vm.userForm.confirmPassword.$dirty) && vm.userForm.confirmPassword.$invalid}"/>
+
+                  <div ng-messages="vm.userForm.confirmPassword.$error" ng-if="vm.userForm.$submitted || vm.userForm.confirmPassword.$dirty"
+                       ng-messages-multiple="ng-messages-multiple">
+                     <small class="error" ng-message="required">This field is mandatory.</small>
+                     <small class="error" ng-message="passwordMatch">Your passwords don't match.</small>
+                  </div>
+               </div>
+               <div class="small-6 column">
+                  <button type="button" class="expand radius no-margin" ng-click="vm.createUserCancel()" translate>Cancel</button>
+               </div>
+               <div class="small-6 column">
+                  <button type="submit" class="expand radius no-margin" ng-click="vm.createUser()" translate>Submit</button>
+               </div>
+            </form>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div class="row" ng-if="vm.loaded">
+   <div class="small-12 column">
+      <table>
+         <thead>
+            <tr>
+               <th translate>Login</th>
+               <th class="hide-for-small" translate>E-mail</th>
+               <th translate>Role</th>
+            </tr>
+         </thead>
+         <tbody>
+            <tr ng-repeat="user in vm.users | orderObjectBy:'login'">
+               <td>{{user.login}}</td>
+               <td class="hide-for-small">{{vm.logins[user.login].mail}}</td>
+               <td>{{user.role}}</td>
+            </tr>
+         </tbody>
+      </table>
+   </div>
+</div>

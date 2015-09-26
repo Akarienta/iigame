@@ -86,8 +86,10 @@ $include-html-global-classes: $include-html-classes;
 // c. Global
 // - - - - - - - - - - - - - - - - - - - - - - - - -
 
+@import url(https://fonts.googleapis.com/css?family=Exo+2&subset=latin,latin-ext);
+
 // We use these to define default font stacks
-// $font-family-sans-serif: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+$font-family-sans-serif: "Exo 2", "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
 // $font-family-serif: Georgia, Cambria, "Times New Roman", Times, serif;
 // $font-family-monospace: Consolas, "Liberation Mono", Courier, monospace;
 
@@ -95,37 +97,37 @@ $include-html-global-classes: $include-html-classes;
 // $font-weight-normal: normal;
 // $font-weight-bold: bold;
 
-// $white       : #FFFFFF;
-// $ghost       : #FAFAFA;
-// $snow        : #F9F9F9;
-// $vapor       : #F6F6F6;
-// $white-smoke : #F5F5F5;
-// $silver      : #EFEFEF;
-// $smoke       : #EEEEEE;
-// $gainsboro   : #DDDDDD;
-// $iron        : #CCCCCC;
-// $base        : #AAAAAA;
-// $aluminum    : #999999;
-// $jumbo       : #888888;
-// $monsoon     : #777777;
-// $steel       : #666666;
-// $charcoal    : #555555;
-// $tuatara     : #444444;
-// $oil         : #333333;
-// $jet         : #222222;
-// $black       : #000000;
+$white       : #FFFFFF;
+$ghost       : #FAFAFA;
+$snow        : #F9F9F9;
+$vapor       : #F6F6F6;
+$white-smoke : #F5F5F5;
+$silver      : #EFEFEF;
+$smoke       : #EEEEEE;
+$gainsboro   : #DDDDDD;
+$iron        : #CCCCCC;
+$base        : #AAAAAA;
+$aluminum    : #999999;
+$jumbo       : #888888;
+$monsoon     : #777777;
+$steel       : #666666;
+$charcoal    : #555555;
+$tuatara     : #444444;
+$oil         : #333333;
+$jet         : #222222;
+$black       : #000000;
 
 // We use these as default colors throughout
-// $primary-color: #008CBA;
-// $secondary-color: #e7e7e7;
-// $alert-color: #f04124;
-// $success-color: #43AC6A;
-// $warning-color: #f08a24;
-// $info-color: #a0d3e8;
+$primary-color: #FFCC33;
+$secondary-color: $oil;
+$alert-color: #F47A66;
+$success-color: #7BC597;
+$warning-color: #f08a24;
+$info-color: #a0d3e8;
 
 // We use these to control various global styles
-// $body-bg: $white;
-// $body-font-color: $jet;
+$body-bg: $jet;
+$body-font-color: $white-smoke;
 // $body-font-family: $font-family-sans-serif;
 // $body-font-weight: $font-weight-normal;
 // $body-font-style: normal;
@@ -213,8 +215,8 @@ $include-html-global-classes: $include-html-classes;
 // $header-font-family: $body-font-family;
 // $header-font-weight: $font-weight-normal;
 // $header-font-style: normal;
-// $header-font-color: $jet;
-// $header-line-height: 1.4;
+$header-font-color: $snow;
+$header-line-height: 2;
 // $header-top-margin: .2rem;
 // $header-bottom-margin: .5rem;
 // $header-text-rendering: optimizeLegibility;
@@ -258,13 +260,13 @@ $include-html-global-classes: $include-html-classes;
 // $paragraph-text-rendering: optimizeLegibility;
 
 // We use these to style <code> tags
-// $code-color: $oil;
+$code-color: scale-color($primary-color, $lightness: -20%);
 // $code-font-family: $font-family-monospace;
 // $code-font-weight: $font-weight-normal;
-// $code-background-color: scale-color($secondary-color, $lightness: 70%);
-// $code-border-size: 1px;
+$code-background-color: scale-color($body-bg, $lightness: -30%);
+$code-border-size: 1px;
 // $code-border-style: solid;
-// $code-border-color: scale-color($code-background-color, $lightness: -10%);
+$code-border-color: scale-color($code-background-color, $lightness: 30%);
 // $code-padding: rem-calc(2) rem-calc(5) rem-calc(1);
 
 // We use these to style anchors
@@ -357,7 +359,7 @@ $include-html-global-classes: $include-html-classes;
 // We use these to control text style.
 // $alert-font-weight: $font-weight-normal;
 // $alert-font-size: rem-calc(13);
-// $alert-font-color: $white;
+$alert-font-color: $jet;
 // $alert-font-color-alt: scale-color($secondary-color, $lightness: -66%);
 
 // We use this for close hover effect.
@@ -365,15 +367,15 @@ $include-html-global-classes: $include-html-classes;
 
 // We use these to control border styles.
 // $alert-border-style: solid;
-// $alert-border-width: 1px;
+$alert-border-width: 0px;
 // $alert-border-color: scale-color($primary-color, $lightness: $alert-function-factor);
 // $alert-bottom-margin: rem-calc(20);
 
 // We use these to style the close buttons
-// $alert-close-color: $oil;
+$alert-close-color: $jet;
 // $alert-close-top: 50%;
 // $alert-close-position: rem-calc(4);
-// $alert-close-font-size: rem-calc(22);
+$alert-close-font-size: rem-calc(18);
 // $alert-close-opacity: .3;
 // $alert-close-opacity-hover: .5;
 // $alert-close-padding: 9px 6px 4px;
@@ -449,7 +451,7 @@ $include-html-global-classes: $include-html-classes;
 
 // We use these to control button text styles.
 // $button-font-family: $body-font-family;
-// $button-font-color: $white;
+$button-font-color: $jet;
 // $button-font-color-alt: $oil;
 // $button-font-tny: rem-calc(11);
 // $button-font-sml: rem-calc(13);
@@ -641,16 +643,16 @@ $include-html-global-classes: $include-html-classes;
 // $form-label-font-size: rem-calc(14);
 // $form-label-font-weight: $font-weight-normal;
 // $form-label-line-height: 1.5;
-// $form-label-font-color: scale-color($black, $lightness: 30%);
+$form-label-font-color: $white-smoke;
 // $form-label-small-transform: capitalize;
 // $form-label-bottom-margin: 0;
 // $input-font-family: inherit;
-// $input-font-color: rgba(0,0,0,0.75);
+$input-font-color: $snow;
 // $input-font-size: rem-calc(14);
-// $input-bg-color: $white;
-// $input-focus-bg-color: scale-color($white, $lightness: -2%);
-// $input-border-color: scale-color($white, $lightness: -20%);
-// $input-focus-border-color: scale-color($white, $lightness: -40%);
+$input-bg-color: $tuatara;
+$input-focus-bg-color: scale-color($tuatara, $lightness: 15%);
+$input-border-color: $oil;
+$input-focus-border-color: scale-color($oil, $lightness: 15%);
 // $input-border-style: solid;
 // $input-border-width: 1px;
 // $input-border-radius: $global-radius;
@@ -689,7 +691,7 @@ $include-html-global-classes: $include-html-classes;
 // $input-error-message-font-size: rem-calc(12);
 // $input-error-message-font-weight: $font-weight-normal;
 // $input-error-message-font-style: italic;
-// $input-error-message-font-color: $white;
+$input-error-message-font-color: $jet;
 // $input-error-message-bg-color: $alert-color;
 // $input-error-message-font-color-alt: $oil;
 
@@ -817,7 +819,7 @@ $include-html-global-classes: $include-html-classes;
 // We use these to style the label text
 // $label-font-sizing: rem-calc(11);
 // $label-font-weight: $font-weight-normal;
-// $label-font-color: $oil;
+// $label-font-color: $jet;
 // $label-font-color-alt: $white;
 // $label-font-family: $body-font-family;
 
@@ -986,10 +988,10 @@ $include-html-global-classes: $include-html-classes;
 // $include-html-panel-classes: $include-html-classes;
 
 // We use these to control the background and border styles
-// $panel-bg: scale-color($white, $lightness: -5%);
+$panel-bg: scale-color($body-bg, $lightness: 10%);
 // $panel-border-style: solid;
-// $panel-border-size: 1px;
-// $callout-panel-bg: scale-color($primary-color, $lightness: 94%);
+$panel-border-size: 0px;
+$callout-panel-bg: scale-color($primary-color, $lightness: -70%);
 
 // We use this % to control how much we darken things on hover
 // $panel-border-color: scale-color($panel-bg, $lightness: -11%);
@@ -1292,16 +1294,16 @@ $include-html-global-classes: $include-html-classes;
 // $include-html-table-classes: $include-html-classes;
 
 // These control the background color for the table and even rows
-// $table-bg: $white;
-// $table-even-row-bg: $snow;
+$table-bg: $tuatara;
+$table-even-row-bg: $charcoal;
 
 // These control the table cell border style
 // $table-border-style: solid;
 // $table-border-size: 1px;
-// $table-border-color: $gainsboro;
+$table-border-color: $base;
 
 // These control the table head styles
-// $table-head-bg: $white-smoke;
+$table-head-bg: $aluminum;
 // $table-head-font-size: rem-calc(14);
 // $table-head-font-color: $jet;
 // $table-head-font-weight: $font-weight-bold;
@@ -1323,7 +1325,7 @@ $include-html-global-classes: $include-html-classes;
 // These control the row padding and font styles
 // $table-row-padding: rem-calc(9 10);
 // $table-row-font-size: rem-calc(14);
-// $table-row-font-color: $jet;
+$table-row-font-color: $white-smoke;
 // $table-line-height: rem-calc(18);
 
 // These are for controlling the layout, display and margin of tables

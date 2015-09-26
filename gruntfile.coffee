@@ -133,15 +133,33 @@ module.exports = (grunt) ->
                   src: '**/*.{png,ico,xml,json}',
                   dest: '<%= config.dist %>/favicon'
                }
+               {
+                  # icons
+                  expand: true,
+                  flatten: true,
+                  cwd: 'bower_components',
+                  dest: '<%= config.dist %>/fonts',
+                  src: 'foundation-icon-fonts/*.{ttf,eot,woff,svg}'
+               }
             ]
          dev:
             files: [
-               # pages
-               expand: true,
-               flatten: true,
-               cwd: '<%= config.app %>',
-               src: '**/*.{html,json}',
-               dest: '.tmp'
+               {
+                  # pages and jsons
+                  expand: true,
+                  flatten: true,
+                  cwd: '<%= config.app %>',
+                  src: '**/*.{html,json}',
+                  dest: '.tmp'
+               }
+               {
+                  # icons
+                  expand: true,
+                  flatten: true,
+                  cwd: 'bower_components',
+                  dest: '.tmp/fonts',
+                  src: 'foundation-icon-fonts/*.{ttf,eot,woff,svg}'
+               }
             ]
 
       # preparation of CSS and JS minification

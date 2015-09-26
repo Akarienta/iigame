@@ -13,6 +13,7 @@
     "angular-password": "~1.0.1",
     "angular-ui-router": "ui-router#~0.2.15",
     "angularfire": "~1.1.2",
-    "foundation": "~5.5.2"
+    "foundation": "~5.5.2",
+    "foundation-icon-fonts": "*"
   }
 }

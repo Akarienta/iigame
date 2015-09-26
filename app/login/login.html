@@ -1,0 +1,78 @@
+<div class="row" ng-if="vm.loaded">
+   <div ng-include="'alerts.html'"></div>
+
+   <div class="small-12 medium-6 large-4 column small-centered">
+      <div class="panel form radius space-default-top" ng-if="vm.isTemplateVisible(0)">
+         <div class="row">
+            <div class="small-12 column text-center">
+               <h1 translate>Login</h1>
+            </div>
+            <form novalidate>
+               <div class="small-12 column">
+                  <input type="text" placeholder="{{'Login' | translate}}" class="radius"/>
+               </div>
+               <div class="small-12 column">
+                  <input type="text" placeholder="{{'Password' | translate}}" class="radius"/>
+               </div>
+               <div class="small-12 column">
+                  <input type="checkbox" name="rememberLogin" id="rememberLogin" ng-model="vm.rememberLogin" ng-value="true" required/>
+                  <label for="rememberLogin" translate>Remember my login</label>
+               </div>
+               <div class="small-12 column">
+                  <button type="submit" class="expand radius" ng-click="" translate>Submit</button>
+               </div>
+               <div class="small-12 column text-center">
+                  <a href="" translate>Forgotten password?</a>
+               </div>
+            </form>
+         </div>
+      </div>
+
+      <div class="panel form radius space-default-top" ng-if="vm.isTemplateVisible(1)">
+         <div class="row">
+            <div class="small-12 column text-center">
+               <h1 translate>Forgotten Password</h1>
+            </div>
+            <form novalidate>
+               <div class="small-12 column">
+                  <input type="email" placeholder="{{'E-mail' | translate}}" class="radius"/>
+               </div>
+               <div class="small-12 column">
+                  <button type="submit" class="expand radius no-margin" ng-click="" translate>Submit</button>
+               </div>
+            </form>
+         </div>
+      </div>
+
+      <div class="panel form radius space-default-top" ng-if="vm.isTemplateVisible(2)">
+         <div class="row">
+            <div class="small-12 column text-center">
+               <h1 translate>Forgotten Password</h1>
+            </div>
+            <form novalidate>
+               <div class="small-12 column space-small-bottom" translate>
+                  E-mail with istructions to password reset has been sent to test@test.cz.
+               </div>
+               <div class="small-12 column">
+                  <button type="submit" class="expand radius no-margin" ng-click="" translate>Back</button>
+               </div>
+            </form>
+         </div>
+      </div>
+
+      <div class="panel form radius space-default-top" ng-if="vm.isTemplateVisible(3)">
+         <div class="row">
+            <div class="small-12 column text-center">
+               <h1 translate>Logout</h1>
+            </div>
+            <div class="small-12 column text-center space-small-bottom" translate>
+               User: {{}}
+            </div>
+            <div class="small-12 column">
+               <button type="submit" class="expand radius no-margin" ng-click="" translate>Submit</button>
+            </div>
+         </div>
+      </div>
+   </div>
+
+</div>

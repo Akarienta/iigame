@@ -1,7 +1,0 @@
-<div class="row" ng-controller="AlertsCtrl as alertVm">
-   <div class="small-12 column">
-      <alert ng-repeat="alert in alertVm.getAlerts()" type="alert.type" close="alertVm.closeAlert($index)">
-         {{alert.msg | translate}}
-      </alert>
-   </div>
-</div>
