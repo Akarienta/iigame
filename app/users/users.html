@@ -2,7 +2,7 @@
 
 <div class="row" ng-if="vm.loaded">
    <div class="small-12 column">
-      <h1 translate>Users Definition</h1>
+      <h1 translate>Users</h1>
    </div>
 
    <div ng-include="'alerts.html'"></div>
@@ -10,12 +10,12 @@
    <div class="small-12 column">
       <div class="panel radius" ng-show="!vm.addingUser" translate>
          <p ng-if="!vm.canAddUser">
-            Users definition was disabled in Firebase. To allow it, please login into <a href="" ng-click="vm.goToFirebaseSecurity()" target="_blank">your
+            Users addition was disabled in Firebase. To allow it, please login into <a href="" ng-click="vm.goToFirebaseSecurity()" target="_blank">your
             Firebase</a> and set rule <code>rules.accounts[.write]</code> to <code>true</code>.
          </p>
 
          <p ng-if="vm.canAddUser" translate>
-            Don't forget to disable users definition when you are done. You can do it in <a href="" ng-click="vm.goToFirebaseSecurity()" target="_blank">your
+            Don't forget to disable users addition when you are done. You can do it in <a href="" ng-click="vm.goToFirebaseSecurity()" target="_blank">your
             Firebase</a> by setting rule <code>rules.accounts[.write]</code> to <code>false</code>.
          </p>
       </div>
@@ -106,6 +106,7 @@
 </div>
 
 <div class="row" ng-if="vm.loaded">
+   <!-- TODO empty table -->
    <div class="small-12 column">
       <table>
          <thead>

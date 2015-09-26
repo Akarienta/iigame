@@ -8,6 +8,7 @@
          'gettext',
          'firebase',
          'ngMessages',
+         'ngCookies',
          'iigame.error',
          'iigame.constants',
          'iigame.alerts',
@@ -32,19 +33,13 @@
    }
 
    /** @ngAnotate */
-   function run($rootScope, ConfigService, AlertsService, FirebaseService, SessionService, gettextCatalog) {
+   function run($rootScope, ConfigService, AlertsService, gettextCatalog) {
       ConfigService.getLanguage().then(function (lang) {
          gettextCatalog.setCurrentLanguage(lang);
       });
 
       $rootScope.$on('$stateChangeStart', function () {
          AlertsService.cleanAlerts();
-      });
-
-      SessionService.getFirebasePromise().then(function() {
-         FirebaseService.getAuth().$onAuth(function (authData) {
-            $rootScope.$broadcast('userUpdated', authData);
-         });
       });
    }
 

@@ -1,75 +1,104 @@
-<div class="row" ng-if="vm.loaded">
-   <div ng-include="'alerts.html'"></div>
+<div ng-include="'spinner.html'" ng-if="!vm.loaded"></div>
 
-   <div class="small-12 medium-6 large-4 column small-centered">
-      <div class="panel form radius space-default-top" ng-if="vm.isTemplateVisible(0)">
+<div class="row" ng-if="vm.loaded">
+   <div ng-include="'alerts.html'" ng-class="{'space-small-top': vm.hasAlerts()}"></div>
+</div>
+
+<div class="row" ng-if="vm.loaded">
+
+   <div class="small-12 medium-6 large-4 column small-centered" ng-class="{'space-default-top': !vm.hasAlerts()}">
+
+      <div class="panel form radius" ng-if="vm.isTemplateVisible(vm.templates.login)">
          <div class="row">
             <div class="small-12 column text-center">
                <h1 translate>Login</h1>
             </div>
-            <form novalidate>
+            <form name="vm.loginForm" novalidate>
                <div class="small-12 column">
-                  <input type="text" placeholder="{{'Login' | translate}}" class="radius"/>
+                  <input type="text" name="login" placeholder="{{'Login' | translate}}" class="radius" ng-model="vm.auth.login" required
+                         ng-class="{'error': (vm.loginForm.$submitted || vm.loginForm.login.$dirty) && vm.loginForm.login.$invalid}" ng-pattern="/^[a-z]+$/">
+
+                  <div ng-messages="vm.loginForm.login.$error" ng-if="vm.loginForm.$submitted || vm.loginForm.login.$dirty"
+                       ng-messages-multiple="ng-messages-multiple">
+                     <small class="error" ng-message="required">This field is mandatory.</small>
+                     <small class="error" ng-message="pattern" translate>Only small letters are allowed.</small>
+                  </div>
                </div>
                <div class="small-12 column">
-                  <input type="text" placeholder="{{'Password' | translate}}" class="radius"/>
+                  <input type="password" name="password" placeholder="{{'Password' | translate}}" class="radius" ng-model="vm.auth.password" required
+                         ng-class="{'error': (vm.loginForm.$submitted || vm.loginForm.password.$dirty) && vm.loginForm.password.$invalid}"/>
+
+                  <div ng-messages="vm.loginForm.password.$error" ng-if="vm.loginForm.$submitted || vm.loginForm.password.$dirty"
+                       ng-messages-multiple="ng-messages-multiple">
+                     <small class="error" ng-message="required">This field is mandatory.</small>
+                  </div>
                </div>
                <div class="small-12 column">
-                  <input type="checkbox" name="rememberLogin" id="rememberLogin" ng-model="vm.rememberLogin" ng-value="true" required/>
+                  <input type="checkbox" name="rememberLogin" id="rememberLogin" ng-model="vm.rememberLogin" ng-value="true"/>
                   <label for="rememberLogin" translate>Remember my login</label>
                </div>
                <div class="small-12 column">
-                  <button type="submit" class="expand radius" ng-click="" translate>Submit</button>
+                  <button type="submit" class="expand radius" ng-click="vm.login()" translate>Submit</button>
                </div>
                <div class="small-12 column text-center">
-                  <a href="" translate>Forgotten password?</a>
+                  <a href="" ng-click="vm.changeTemplate(vm.templates.resetPasswd)" translate>Forgotten password?</a>
                </div>
             </form>
          </div>
       </div>
 
-      <div class="panel form radius space-default-top" ng-if="vm.isTemplateVisible(1)">
+      <div class="panel form radius" ng-if="vm.isTemplateVisible(vm.templates.resetPasswd)">
+         <div class="row">
+            <div class="small-12 column text-center">
+               <h1 translate>Forgotten Password</h1>
+            </div>
+            <form name="vm.resetForm" novalidate>
+               <div class="small-12 column">
+                  <input type="email" name="mail" placeholder="{{'E-mail' | translate}}" class="radius" required ng-model="vm.reset.mail"
+                         ng-class="{'error': (vm.resetForm.$submitted || vm.resetForm.mail.$dirty) && vm.resetForm.mail.$invalid}"/>
+
+                  <div ng-messages="vm.resetForm.mail.$error" ng-if="vm.resetForm.$submitted || vm.resetForm.mail.$dirty"
+                       ng-messages-multiple="ng-messages-multiple">
+                     <small class="error" ng-message="required" translate>This field is mandatory.</small>
+                     <small class="error" ng-message="email" translate>The text isn't a valid e-mail.</small>
+                  </div>
+               </div>
+               <div class="small-6 column">
+                  <button type="button" class="expand radius no-margin" ng-click="vm.changeTemplate(vm.templates.login)" translate>Back</button>
+               </div>
+               <div class="small-6 column">
+                  <button type="submit" class="expand radius no-margin" ng-click="vm.resetPasswd()" translate>Submit</button>
+               </div>
+            </form>
+         </div>
+      </div>
+
+      <div class="panel form radius" ng-if="vm.isTemplateVisible(vm.templates.resetPasswdDone)">
          <div class="row">
             <div class="small-12 column text-center">
                <h1 translate>Forgotten Password</h1>
             </div>
             <form novalidate>
-               <div class="small-12 column">
-                  <input type="email" placeholder="{{'E-mail' | translate}}" class="radius"/>
+               <div class="small-12 column space-small-bottom text-center" translate>
+                  E-mail with istructions to password reset has been sent to {{vm.mail}}.
                </div>
                <div class="small-12 column">
-                  <button type="submit" class="expand radius no-margin" ng-click="" translate>Submit</button>
+                  <button type="submit" class="expand radius no-margin" ng-click="vm.changeTemplate(vm.templates.login)" translate>Back</button>
                </div>
             </form>
          </div>
       </div>
 
-      <div class="panel form radius space-default-top" ng-if="vm.isTemplateVisible(2)">
-         <div class="row">
-            <div class="small-12 column text-center">
-               <h1 translate>Forgotten Password</h1>
-            </div>
-            <form novalidate>
-               <div class="small-12 column space-small-bottom" translate>
-                  E-mail with istructions to password reset has been sent to test@test.cz.
-               </div>
-               <div class="small-12 column">
-                  <button type="submit" class="expand radius no-margin" ng-click="" translate>Back</button>
-               </div>
-            </form>
-         </div>
-      </div>
-
-      <div class="panel form radius space-default-top" ng-if="vm.isTemplateVisible(3)">
+      <div class="panel form radius" ng-if="vm.isTemplateVisible(vm.templates.logout)">
          <div class="row">
             <div class="small-12 column text-center">
                <h1 translate>Logout</h1>
             </div>
             <div class="small-12 column text-center space-small-bottom" translate>
-               User: {{}}
+               User: {{vm.user.login}}
             </div>
             <div class="small-12 column">
-               <button type="submit" class="expand radius no-margin" ng-click="" translate>Submit</button>
+               <button type="submit" class="expand radius no-margin" ng-click="vm.logout()" translate>Submit</button>
             </div>
          </div>
       </div>

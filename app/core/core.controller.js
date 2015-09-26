@@ -6,7 +6,8 @@
       .controller('CoreCtrl', CoreCtrl);
 
    /** @ngAnotate */
-   function CoreCtrl(SessionService) {
+   function CoreCtrl($rootScope, SessionService, FirebaseService) {
+
       var vm = this;
 
       vm.loaded = false;
@@ -16,9 +17,15 @@
       ////////////
 
       function __init() {
-         SessionService.getMenuPromise().then(function () {
-            vm.loaded = true;
-         });
+         SessionService.getMenuPromise()
+            .then(SessionService.getFirebasePromise)
+            .then(function () {
+               vm.loaded = true;
+
+               FirebaseService.getAuth().$onAuth(function (authData) {
+                  $rootScope.$broadcast('userUpdated', authData);
+               });
+            });
       }
 
    }

@@ -10,14 +10,14 @@
 
       var ACCESS_RIGHTS = {};
       ACCESS_RIGHTS[MODULE.CHECK] = [];
-      ACCESS_RIGHTS[MODULE.PASSWORDS] = [ROLE.SUB];
+      ACCESS_RIGHTS[MODULE.PASSWORDS] = ROLE.getAll();
       ACCESS_RIGHTS[MODULE.LOGIN] = [];
-      ACCESS_RIGHTS[MODULE.USERS] = [ROLE.SUB];
+      ACCESS_RIGHTS[MODULE.USERS] = [];
       ACCESS_RIGHTS[MODULE.SETTINGS] = ROLE.getAll();
       ACCESS_RIGHTS[MODULE.ABOUT] = [];
 
       var service = {
-         getModuleAccesRights: getModuleAccessRights,
+         getModuleAccessRights: getModuleAccessRights,
          checkAccess: checkAccess,
          initController: initController
       };
