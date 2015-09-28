@@ -6,36 +6,25 @@
       .service('SessionService', SessionService);
 
    /** @ngAnotate */
-   function SessionService($q) {
+   function SessionService() {
 
-      var menuPromise = $q.defer();
-      var firebasePromise = $q.defer();
+      var pageLoaded = false;
 
       var service = {
-         resolveMenu: resolveMenu,
-         getMenuPromise: getMenuPromise,
-         resolveFirebase: resolveFirebase,
-         getFirebasePromise: getFirebasePromise
+         isPageLoaded: isPageLoaded,
+         setPageLoaded: setPageLoaded
       };
 
       return service;
 
       ////////////
 
-      function resolveMenu() {
-         menuPromise.resolve();
+      function isPageLoaded() {
+         return pageLoaded;
       }
 
-      function getMenuPromise() {
-         return menuPromise.promise;
-      }
-
-      function resolveFirebase() {
-         firebasePromise.resolve();
-      }
-
-      function getFirebasePromise() {
-         return firebasePromise.promise;
+      function setPageLoaded(value) {
+         pageLoaded = value;
       }
 
    }

@@ -4,6 +4,7 @@
 
 $icon-size: 24px;
 $space-size: 50px;
+$spinner-top-margin: 150px;
 
 .off-canvas-wrap {
    .inner-wrap {
@@ -81,6 +82,18 @@ div.panel.form {
    }
 }
 
+.login-space {
+   margin-top: rem-calc($space-size/4);
+
+   @media #{$medium-up} {
+      margin-top: rem-calc($space-size/2);
+   }
+
+   @media #{$large-up} {
+      margin-top: rem-calc($space-size);
+   }
+}
+
 .no-margin {
    margin: 0 !important;
 }
@@ -130,9 +143,13 @@ input {
 }
 
 .spinner {
-   margin: rem-calc($space-size*3) auto 0;
+   margin: rem-calc($spinner-top-margin) auto 0;
    width: rem-calc(100px);
    text-align: center;
+
+   .no-menu & {
+      margin-top: rem-calc($spinner-top-margin) + $tabbar-height;
+   }
 
    & > div {
       width: rem-calc(20px);
@@ -173,4 +190,5 @@ input {
          transform: scale(1.0);
       }
    }
+
 }

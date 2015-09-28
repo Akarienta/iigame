@@ -6,16 +6,20 @@
       .service('FirebaseService', FirebaseService);
 
    /** @ngAnotate */
-   function FirebaseService($q, $firebaseAuth, $firebaseObject, ConfigService, SessionService) {
+   function FirebaseService($q, $firebaseAuth, $firebaseObject, ConfigService) {
 
-      var data = {};
+      var loadedPromise = $q.defer();
+      var data = {
+         areUsersDisabled: false
+      };
 
       var service = {
+         getLoadedPromise: getLoadedPromise,
          getAuth: getAuth,
          getUsers: getUsers,
          getLogins: getLogins,
-         getWaitForAuthPromise: getWaitForAuthPromise,
-         getSecurityUrlPromise: getSecurityUrlPromise
+         getSecurityUrl: getSecurityUrl,
+         areUsersDisabled: areUsersDisabled
       };
 
       __init();
@@ -23,6 +27,10 @@
       return service;
 
       ////////////
+
+      function getLoadedPromise() {
+         return loadedPromise.promise;
+      }
 
       function getAuth() {
          return data.auth;
@@ -36,31 +44,21 @@
          return data.logins;
       }
 
-      function getWaitForAuthPromise() {
-         return __getRef().then(function (ref) {
-            return $firebaseAuth(ref).$waitForAuth();
-         });
+      function areUsersDisabled() {
+         return data.areUsersDisabled;
       }
 
-      function getSecurityUrlPromise() {
-         return __getRefUrl().then(function (refUrl) {
-            return refUrl + '/?page=Security';
-         });
+      function getSecurityUrl() {
+         return data.fireBaseUrl + '/?page=Security';
       }
 
       ////////////
 
-      function __getRefUrl() {
-         return ConfigService.getFireBaseAppName().then(function (fireBaseAppName) {
-            return 'https://' + fireBaseAppName + '.firebaseio.com';
-         });
-      }
-
       function __getRef() {
-         return __getRefUrl().then(function (refUrl) {
-            return new Firebase(refUrl);
+         return ConfigService.getFireBaseAppName().then(function (fireBaseAppName) {
+            data.fireBaseUrl = 'https://' + fireBaseAppName + '.firebaseio.com';
+            return new Firebase(data.fireBaseUrl);
          });
-
       }
 
       function __getFirebaseObject(path) {
@@ -78,7 +76,9 @@
                data.users = users;
             }),
             __getRef().then(function (ref) {
-               data.auth = $firebaseAuth(ref);
+               return $firebaseAuth(ref).$waitForAuth().then(function() {
+                  return data.auth = $firebaseAuth(ref);
+               });
             })
          ]);
       }
@@ -90,11 +90,20 @@
          ])
       }
 
+      function __postLoadData() {
+         return $q.all([
+            data.users.$save().catch(function () {
+               data.areUsersDisabled = true;
+            })
+         ]);
+      }
+
       function __init() {
          __loadData()
             .then(__areDataLoaded)
+            .then(__postLoadData)
             .then(function () {
-               SessionService.resolveFirebase();
+               loadedPromise.resolve();
             });
       }
 

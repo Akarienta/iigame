@@ -1,6 +1,7 @@
 (function () {
    'use strict';
 
+   /** @namespace iigame */
    angular
       .module('iigame', [
          'ui.router',
@@ -33,12 +34,13 @@
    }
 
    /** @ngAnotate */
-   function run($rootScope, ConfigService, AlertsService, gettextCatalog) {
+   function run($rootScope, ConfigService, AlertsService, SessionService, gettextCatalog) {
       ConfigService.getLanguage().then(function (lang) {
          gettextCatalog.setCurrentLanguage(lang);
       });
 
       $rootScope.$on('$stateChangeStart', function () {
+         SessionService.setPageLoaded(false);
          AlertsService.cleanAlerts();
       });
    }

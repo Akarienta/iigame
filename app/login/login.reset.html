@@ -1,0 +1,21 @@
+<div class="small-12 column text-center">
+   <h1 translate>Forgotten Password</h1>
+</div>
+<form name="vm.resetForm" novalidate>
+   <div class="small-12 column">
+      <input type="email" name="mail" placeholder="{{'E-mail' | translate}}" class="radius" required ng-model="vm.reset.mail"
+             ng-class="{'error': (vm.resetForm.$submitted || vm.resetForm.mail.$dirty) && vm.resetForm.mail.$invalid}"/>
+
+      <div ng-messages="vm.resetForm.mail.$error" ng-if="vm.resetForm.$submitted || vm.resetForm.mail.$dirty"
+           ng-messages-multiple="ng-messages-multiple">
+         <small class="error" ng-message="required" translate>This field is mandatory.</small>
+         <small class="error" ng-message="email" translate>The text isn't a valid e-mail.</small>
+      </div>
+   </div>
+   <div class="small-6 column">
+      <button type="button" class="expand radius no-margin" ng-click="vm.changeTemplate(vm.templates.login)" translate>Back</button>
+   </div>
+   <div class="small-6 column">
+      <button type="submit" class="expand radius no-margin" ng-click="vm.resetPasswd()" translate>Submit</button>
+   </div>
+</form>

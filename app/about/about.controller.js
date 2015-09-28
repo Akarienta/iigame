@@ -6,7 +6,9 @@
       .controller('AboutCtrl', AboutCtrl);
 
    /** @ngAnotate */
-   function AboutCtrl() {
+   function AboutCtrl(AuthService, MODULE) {
+
+      AuthService.checkAccess(MODULE.ABOUT);
 
    }
 

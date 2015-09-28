@@ -6,8 +6,10 @@
       .controller('SettingsCtrl', SettingsCtrl);
 
    /** @ngAnotate */
-   function SettingsCtrl() {
+   function SettingsCtrl(AuthService, MODULE) {
 
+      AuthService.checkAccess(MODULE.SETTINGS);
+      
    }
 
 })();

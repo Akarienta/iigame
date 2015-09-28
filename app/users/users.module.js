@@ -11,12 +11,7 @@
          url: '/users',
          templateUrl: 'users.html',
          controller: 'UsersCtrl',
-         controllerAs: 'vm',
-         resolve: {
-            inAuthData: function (FirebaseService) {
-               return FirebaseService.getWaitForAuthPromise();
-            }
-         }
+         controllerAs: 'vm'
       });
    }
 

@@ -6,7 +6,9 @@
       .controller('PasswordsCtrl', PasswordsCtrl);
 
    /** @ngAnotate */
-   function PasswordsCtrl() {
+   function PasswordsCtrl(AuthService, MODULE) {
+
+      AuthService.checkAccess(MODULE.PASSWORDS);
 
    }
 

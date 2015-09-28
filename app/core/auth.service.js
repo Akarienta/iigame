@@ -6,48 +6,59 @@
       .service('AuthService', AuthService);
 
    /** @ngAnotate */
-   function AuthService($state, FirebaseService, SessionService, MODULE, ROLE) {
+   function AuthService($rootScope, $state, FirebaseService, SessionService, MODULE, ROLE) {
+
+      var authData = FirebaseService.getAuth().$getAuth();
+      FirebaseService.getAuth().$onAuth(function (newAuthData) {
+         authData = newAuthData;
+
+         if (activeModule) {
+            checkAccess(activeModule);
+         }
+
+         $rootScope.$emit('userUpdated');
+      });
 
       var ACCESS_RIGHTS = {};
       ACCESS_RIGHTS[MODULE.CHECK] = [];
       ACCESS_RIGHTS[MODULE.PASSWORDS] = ROLE.getAll();
       ACCESS_RIGHTS[MODULE.LOGIN] = [];
-      ACCESS_RIGHTS[MODULE.USERS] = [];
+      ACCESS_RIGHTS[MODULE.USERS] = FirebaseService.areUsersDisabled() ? ROLE.getAll() : [];
       ACCESS_RIGHTS[MODULE.SETTINGS] = ROLE.getAll();
       ACCESS_RIGHTS[MODULE.ABOUT] = [];
 
+      var activeModule = null;
+
       var service = {
-         getModuleAccessRights: getModuleAccessRights,
-         checkAccess: checkAccess,
-         initController: initController
+         getUser: getUser,
+         canAccess: canAccess,
+         checkAccess: checkAccess
       };
 
       return service;
 
       ////////////
 
-      function getModuleAccessRights(module) {
-         return ACCESS_RIGHTS[module];
+      function getUser() {
+         return authData === null ? null : FirebaseService.getUsers()[authData.uid];
       }
 
-      function checkAccess(authData, module) {
+      function canAccess(module) {
          if (ACCESS_RIGHTS[module].length === 0) {
             return true;
          }
 
-         SessionService.getFirebasePromise().then(function () {
-            if (authData === null || ACCESS_RIGHTS[module].indexOf(FirebaseService.getUsers()[authData.uid].role) === -1) {
-               throw $state.go('403');
-            } else {
-               return true;
-            }
-         });
+         return authData !== null && ACCESS_RIGHTS[module].indexOf(getUser().role) !== -1;
       }
 
-      function initController(authData, module) {
-         return SessionService.getMenuPromise()
-            .then(SessionService.getFirebasePromise)
-            .then(checkAccess(authData, module));
+      function checkAccess(module) {
+         activeModule = module;
+
+         if (!canAccess(module)) {
+            throw $state.go('403');
+         } else {
+            SessionService.setPageLoaded(true);
+         }
       }
 
    }

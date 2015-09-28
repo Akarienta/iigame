@@ -6,7 +6,9 @@
       .controller('ErrorCtrl', ErrorCtrl);
 
    /** @ngAnotate */
-   function ErrorCtrl() {
+   function ErrorCtrl(SessionService) {
+
+      SessionService.setPageLoaded(true);
 
    }
 

@@ -6,93 +6,26 @@
       .controller('MenuCtrl', MenuCtrl);
 
    /** @ngAnotate */
-   function MenuCtrl($scope, SessionService, AuthService, FirebaseService, MODULE) {
-
-      $scope.$on('userUpdated', function (event, authData) {
-         if (!users) {
-            return;
-         }
-
-         user = authData === null ? null : users[authData.uid];
-      });
+   function MenuCtrl($rootScope, AuthService, MODULE) {
 
       var vm = this;
-      var users = {};
-      var user = null;
 
-      vm.isHomeVisible = isHomeVisible;
-      vm.isPasswordsVisible = isPasswordsVisible;
-      vm.isLoginVisible = isLoginVisible;
-      vm.isLogoutVisible = isLogoutVisible;
-      vm.isSettingsVisible = isSettingsVisible;
-      vm.isUsersVisible = isUsersVisible;
-      vm.isAboutVisible = isAboutVisible;
+      $rootScope.$on('userUpdated', function () {
+         load();
+      });
 
-      __init();
+      load();
 
       ////////////
 
-      function isHomeVisible() {
-         return __isItemVisible(MODULE.CHECK);
-      }
-
-      function isPasswordsVisible() {
-         return __isItemVisible(MODULE.PASSWORDS);
-      }
-
-      function isLoginVisible() {
-         return __isItemVisible(MODULE.LOGIN) && user === null;
-      }
-
-      function isLogoutVisible() {
-         return __isItemVisible(MODULE.LOGIN) && user !== null;
-      }
-      function isSettingsVisible() {
-         return __isItemVisible(MODULE.SETTINGS);
-      }
-
-      function isUsersVisible() {
-         return __isItemVisible(MODULE.USERS);
-      }
-
-      function isAboutVisible() {
-         return __isItemVisible(MODULE.ABOUT);
-      }
-
-      ////////////
-
-      function __init() {
-         SessionService.getFirebasePromise()
-            .then(__loadData)
-            .then(__loadUser)
-            .then(function() {
-               SessionService.resolveMenu();
-            });
-      }
-
-      function __loadData() {
-         users = FirebaseService.getUsers();
-         return true;
-      }
-
-      function __loadUser() {
-         return FirebaseService.getWaitForAuthPromise().then(function (authData) {
-            user = authData === null ? null : users[authData.uid];
-         })
-      }
-
-      function __isItemVisible(module) {
-         var rights = AuthService.getModuleAccessRights(module);
-
-         if (rights.length === 0) {
-            return true;
-         }
-
-         if (user === null) {
-            return false;
-         }
-
-         return rights.indexOf(user.role) !== -1;
+      function load() {
+         vm.isHomeVisible = AuthService.canAccess(MODULE.CHECK);
+         vm.isPasswordsVisible = AuthService.canAccess(MODULE.PASSWORDS);
+         vm.isLoginVisible = AuthService.canAccess(MODULE.LOGIN) && !AuthService.getUser();
+         vm.isLogoutVisible = AuthService.canAccess(MODULE.LOGIN) && AuthService.getUser();
+         vm.isSettingsVisible = AuthService.canAccess(MODULE.SETTINGS);
+         vm.isUsersVisible = AuthService.canAccess(MODULE.USERS);
+         vm.isAboutVisible = AuthService.canAccess(MODULE.ABOUT);   
       }
 
    }

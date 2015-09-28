@@ -2,10 +2,7 @@
    'use strict';
 
    angular
-      .module('iigame.settings', [
-         'ui.router',
-         'iigame.constants'
-      ])
+      .module('iigame.settings', [])
       .config(config);
 
    /** @ngAnotate */

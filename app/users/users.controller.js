@@ -6,18 +6,19 @@
       .controller('UsersCtrl', UsersCtrl);
 
    /** @ngAnotate */
-   function UsersCtrl($log, $window, $scope, FirebaseService, AlertsService, AuthService, gettextCatalog, inAuthData, ROLE, MODULE) {
+   function UsersCtrl($log, FirebaseService, AuthService, AlertsService, gettextCatalog, ROLE, MODULE) {
+
+      AuthService.checkAccess(MODULE.USERS);
 
       var vm = this;
 
-      $scope.$on('userUpdated', function (event, authData) {
-         AuthService.checkAccess(authData, MODULE.USERS);
-      });
-
       // fields
-      vm.loaded = false;
+      vm.users = FirebaseService.getUsers();
+      vm.logins = FirebaseService.getLogins();
+      console.log('here ' + FirebaseService.areUsersDisabled());
+      vm.areUsersDisabled = FirebaseService.areUsersDisabled();
       vm.addingUser = false;
-      vm.canAddUser = true;
+      vm.areUsersDisabled = true;
       vm.userForm = {};
       vm.newUser = {};
       vm.newUser.password = {};
@@ -27,9 +28,9 @@
       vm.createUser = createUser;
       vm.createUserCancel = createUserCancel;
       vm.addUser = addUser;
-      vm.goToFirebaseSecurity = goToFirebaseSecurity;
+      vm.getFirebaseSecurityUrl = getFirebaseSecurityUrl;
 
-      __init();
+      console.log(vm.users);
 
       ////////////
 
@@ -63,34 +64,11 @@
          vm.addingUser = value;
       }
 
-      function goToFirebaseSecurity() {
-         FirebaseService.getSecurityUrlPromise().then(function (url) {
-            $window.open(url);
-         });
+      function getFirebaseSecurityUrl() {
+         return FirebaseService.getSecurityUrl();
       }
 
       ////////////
-
-      function __init() {
-         AuthService.initController(inAuthData, MODULE.USERS)
-            .then(__loadData)
-            .then(__disableUserAdditionIfNeeded)
-            .finally(function () {
-               vm.loaded = true;
-            })
-      }
-
-      function __loadData() {
-         vm.users = FirebaseService.getUsers();
-         vm.logins = FirebaseService.getLogins();
-         return true;
-      }
-
-      function __disableUserAdditionIfNeeded() {
-         return vm.users.$save().catch(function () {
-            vm.canAddUser = false;
-         });
-      }
 
       function __saveUser(userData) {
          vm.users[userData.uid] = {

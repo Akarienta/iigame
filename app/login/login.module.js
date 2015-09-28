@@ -11,12 +11,7 @@
          url: '/login',
          templateUrl: 'login.html',
          controller: 'LoginCtrl',
-         controllerAs: 'vm',
-         resolve: {
-            inAuthData: function (FirebaseService) {
-               return FirebaseService.getWaitForAuthPromise();
-            }
-         }
+         controllerAs: 'vm'
       });
    }
 

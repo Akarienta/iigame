@@ -6,7 +6,9 @@
       .controller('CheckCtrl', CheckCtrl);
 
    /** @ngAnotate */
-   function CheckCtrl() {
+   function CheckCtrl(AuthService, MODULE) {
+
+      AuthService.checkAccess(MODULE.CHECK);
 
    }
 

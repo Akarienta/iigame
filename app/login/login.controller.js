@@ -6,20 +6,16 @@
       .controller('LoginCtrl', LoginCtrl);
 
    /** @ngAnotate */
-   function LoginCtrl($scope, $cookies, AuthService, FirebaseService, AlertsService, inAuthData, gettextCatalog, MODULE) {
+   function LoginCtrl($rootScope, $cookies, AuthService, FirebaseService, AlertsService, SessionService, gettextCatalog, MODULE) {
+
+      AuthService.checkAccess(MODULE.LOGIN);
 
       var vm = this;
       var LOGIN_COOKIE = 'iigame.login';
 
-      $scope.$on('userUpdated', function (event, authData) {
-         if (!vm.users) {
-            return;
-         }
-
-         vm.user = authData === null ? null : vm.users[authData.uid];
+      $rootScope.$on('userUpdated', function () {
+         vm.user = AuthService.getUser();
          changeTemplate(vm.user === null ? vm.templates.login : vm.templates.logout);
-         __loadCookie();
-         AuthService.checkAccess(authData, MODULE.USERS);
       });
 
       // template types
@@ -31,9 +27,11 @@
       };
 
       // fields
+      vm.users = FirebaseService.getUsers();
+      vm.logins = FirebaseService.getLogins();
+      vm.user = AuthService.getUser();
       vm.loginForm = {};
       vm.resetForm = {};
-      vm.loaded = false;
       vm.template = -1;
       vm.auth = {};
       vm.reset = {};
@@ -47,7 +45,7 @@
       vm.logout = logout;
       vm.resetPasswd = resetPasswd;
 
-      __init();
+      changeTemplate(vm.user === null ? vm.templates.login : vm.templates.logout);
 
       ////////////
 
@@ -59,6 +57,7 @@
          AlertsService.cleanAlerts();
          __clearLoginForm();
          __clearResetForm();
+         __loadCookie();
          vm.template = template;
       }
 
@@ -71,20 +70,20 @@
             return;
          }
 
-         vm.loaded = false;
+         SessionService.setPageLoaded(false);
          var login = vm.auth.login;
          var rememberLogin = vm.rememberLogin;
 
          FirebaseService.getAuth().$authWithPassword({
             email: angular.isDefined(vm.logins[vm.auth.login]) ? vm.logins[vm.auth.login].mail : '',
             password: vm.auth.password
-         }).then(function()  {
+         }).then(function () {
             __clearLoginForm();
             $cookies.put(LOGIN_COOKIE, rememberLogin ? login : '');
          }).catch(function (error) {
             AlertsService.addAlert('alert', __getLoginErrorMessage(error));
          }).finally(function () {
-            vm.loaded = true;
+            SessionService.setPageLoaded(true);
          });
       }
 
@@ -93,19 +92,18 @@
             return;
          }
 
-         vm.loaded = false;
+         SessionService.setPageLoaded(false);
          vm.mail = vm.reset.mail;
 
          FirebaseService.getAuth().$resetPassword({
             email: vm.reset.mail
-         }).then(function() {
+         }).then(function () {
             __clearResetForm();
             changeTemplate(vm.templates.resetPasswdDone);
-         }).catch(function(error) {
-            console.log(error.code);
+         }).catch(function (error) {
             AlertsService.addAlert('alert', __getResetErrorMessage(error));
-         }).finally(function() {
-            vm.loaded = true;
+         }).finally(function () {
+            SessionService.setPageLoaded(true);
          });
       }
 
@@ -114,23 +112,6 @@
       }
 
       ////////////
-
-      function __init() {
-         AuthService.initController(inAuthData, MODULE.LOGIN)
-            .then(__loadData)
-            .finally(function () {
-               vm.loaded = true;
-               __loadCookie();
-            });
-      }
-
-      function __loadData() {
-         vm.users = FirebaseService.getUsers();
-         vm.logins = FirebaseService.getLogins();
-         vm.user = inAuthData === null ? null : vm.users[inAuthData.uid];
-         changeTemplate(vm.user === null ? vm.templates.login : vm.templates.logout);
-         return true;
-      }
 
       function __clearLoginForm() {
          vm.auth.login = '';
