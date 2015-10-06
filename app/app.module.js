@@ -9,6 +9,7 @@
          'gettext',
          'firebase',
          'ngMessages',
+         'ngPassword',
          'ngCookies',
          'iigame.error',
          'iigame.constants',

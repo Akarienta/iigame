@@ -2,7 +2,7 @@
 
    <!-- headline -->
    <div class="small-12 column">
-      <h1 translate>Users</h1>
+      <h1 translate translate-comment="headline">Users</h1>
    </div>
 
    <!-- alerts -->
@@ -11,12 +11,12 @@
    <!-- Firebase info -->
    <div class="small-12 column">
       <div class="panel radius" ng-show="!vm.addingUser" translate>
-         <p ng-if="!vm.areUsersDisabled">
+         <p ng-if="vm.areUsersDisabled">
             Users addition was disabled in Firebase. To allow it, please login into <a href="{{vm.getFirebaseSecurityUrl()}}" target="_blank">your Firebase</a>
             and set rule <code>rules.accounts[.write]</code> to <code>true</code>.
          </p>
 
-         <p ng-if="vm.areUsersDisabled" translate>
+         <p ng-if="!vm.areUsersDisabled" translate>
             Don't forget to disable users addition when you are done. You can do it in <a href="{{vm.getFirebaseSecurityUrl()}}" target="_blank">your
             Firebase</a> by setting rule <code>rules.accounts[.write]</code> to <code>false</code>.
          </p>
@@ -24,13 +24,13 @@
    </div>
 
    <!-- add user button -->
-   <div class="small-12 medium-6 large-4 left column" ng-if="!vm.addingUser && vm.areUsersDisabled">
+   <div class="small-12 medium-6 large-4 left column" ng-if="!vm.addingUser && !vm.areUsersDisabled">
       <button class="radius expand" ng-click="vm.addUser(true)" translate>Add user</button>
    </div>
 
    <!-- add user form -->
-   <div class="small-12 medium-6 large-4 left column" ng-if="vm.addingUser && vm.areUsersDisabled">
-      <div class="panel form radius space-small-bottom">
+   <div class="small-12 medium-6 large-4 left column" ng-if="vm.addingUser && !vm.areUsersDisabled">
+      <div class="panel form radius space-larger-bottom">
          <div class="row">
             <form name="vm.userForm" novalidate>
 
@@ -117,8 +117,7 @@
    </div>
 
    <!-- users -->
-   <!-- TODO hide empty table -->
-   <div class="small-12 column" ng-show="!angular.equals({}, vm.users)">
+   <div class="small-12 column" ng-hide="vm.users.$value === null">
       <table>
          <thead>
             <tr>

@@ -1,5 +1,150 @@
 <div class="row">
-   <div class="small-12">
-      <h1>Settings</h1>
+
+   <!-- headline -->
+   <div class="small-12 column">
+      <h1 translate translate-comment="headline">Settings</h1>
    </div>
+
+   <!-- alerts -->
+   <div ng-include="'alerts.html'"></div>
+
+   <!-- chnage mail -->
+   <div class="small-12 medium-6 large-4 column">
+      <div class="row">
+         <div class="small-12 column">
+            <h2 translate translate-comment="headline">Change E-mail</h2>
+         </div>
+         <form name="vm.changeMailForm" novalidate>
+            <!-- password -->
+            <div class="small-12 column">
+               <input type="password" name="password" placeholder="{{'Password' | translate}}" class="radius" ng-model="vm.mail.password" required
+                      ng-class="{'error': (vm.changeMailForm.$submitted || vm.changeMailForm.password.$dirty) && vm.changeMailForm.password.$invalid}"/>
+
+               <div ng-messages="vm.changeMailForm.password.$error" ng-if="vm.changeMailForm.$submitted || vm.changeMailForm.password.$dirty"
+                    ng-messages-multiple="ng-messages-multiple">
+                  <small class="error" ng-message="required">This field is mandatory.</small>
+               </div>
+            </div>
+            <!-- new mail -->
+            <div class="small-12 column">
+               <input name="mail" ng-model="vm.mail.new" type="email" placeholder="{{'New e-mail' | translate}}"
+                      class="radius" required
+                      ng-class="{'error': (vm.changeMailForm.$submitted || vm.changeMailForm.mail.$dirty) && vm.changeMailForm.mail.$invalid}"/>
+
+               <div ng-messages="vm.changeMailForm.mail.$error" ng-if="vm.changeMailForm.$submitted || vm.changeMailForm.mail.$dirty"
+                    ng-messages-multiple="ng-messages-multiple">
+                  <small class="error" ng-message="required" translate>This field is mandatory.</small>
+                  <small class="error" ng-message="email" translate>The text isn't a valid e-mail.</small>
+               </div>
+            </div>
+            <!-- buttons -->
+            <div class="small-12 column">
+               <div class="row">
+                  <div class="small-6 column">
+                     <button type="button" class="expand radius no-margin" ng-click="vm.clearChangeMailForm()" translate>Cancel</button>
+                  </div>
+                  <div class="small-6 column">
+                     <button type="submit" class="expand radius no-margin" ng-click="vm.changeMail()" translate>Submit</button>
+                  </div>
+               </div>
+            </div>
+         </form>
+      </div>
+   </div>
+
+   <!-- chnage password -->
+   <div class="small-12 medium-6 large-4 column space-default-top-small-only">
+      <div class="row">
+         <div class="small-12 column">
+            <h2 translate translate-comment="headline">Change Password</h2>
+         </div>
+         <form name="vm.changePasswdForm" novalidate>
+            <!-- old -->
+            <div class="small-12 column">
+               <input type="password" name="oldPassword" placeholder="{{'Old password' | translate}}" class="radius" ng-model="vm.password.old" required
+                      ng-class="{'error': (vm.changePasswdForm.$submitted || vm.changePasswdForm.oldPassword.$dirty) && vm.changePasswdForm.oldPassword.$invalid}"/>
+
+               <div ng-messages="vm.changePasswdForm.oldPassword.$error" ng-if="vm.changePasswdForm.$submitted || vm.changePasswdForm.oldPassword.$dirty"
+                    ng-messages-multiple="ng-messages-multiple">
+                  <small class="error" ng-message="required">This field is mandatory.</small>
+               </div>
+            </div>
+            <!-- new -->
+            <div class="small-12 column">
+               <input type="password" name="newPassword" placeholder="{{'New password' | translate}}" ng-model="vm.password.new" class="radius" required
+                      ng-class="{'error': (vm.changePasswdForm.$submitted || vm.changePasswdForm.newPassword.$dirty) && vm.changePasswdForm.newPassword.$invalid}"
+                      ng-pattern="/^[a-zA-Z0-9]+$/" ng-minlength="6">
+
+               <div ng-messages="vm.changePasswdForm.newPassword.$error" ng-if="vm.changePasswdForm.$submitted || vm.changePasswdForm.newPassword.$dirty"
+                    ng-messages-multiple="ng-messages-multiple">
+                  <small class="error" ng-message="required" translate>This field is mandatory.</small>
+                  <small class="error" ng-message="pattern" translate>Only letters and digits are allowed.</small>
+                  <small class="error" ng-message="minlength" translate>Minimum length is 6.</small>
+               </div>
+            </div>
+            <!-- new match -->
+            <div class="small-12 column">
+               <input type="password" name="confirmPassword" match-password="newPassword" placeholder="{{'New password again' | translate}}" required
+                      ng-model="vm.password.confirm" class="radius"
+                      ng-class="{'error': (vm.changePasswdForm.$submitted || vm.changePasswdForm.confirmPassword.$dirty) && vm.changePasswdForm.confirmPassword.$invalid}"/>
+
+               <div ng-messages="vm.changePasswdForm.confirmPassword.$error"
+                    ng-if="vm.changePasswdForm.$submitted || vm.changePasswdForm.confirmPassword.$dirty"
+                    ng-messages-multiple="ng-messages-multiple">
+                  <small class="error" ng-message="required">This field is mandatory.</small>
+                  <small class="error" ng-message="passwordMatch">Your passwords don't match.</small>
+               </div>
+            </div>
+            <!-- buttons -->
+            <div class="small-12 column">
+               <div class="row">
+                  <div class="small-6 column">
+                     <button type="button" class="expand radius no-margin" ng-click="vm.clearChangePasswdForm()" translate>Cancel</button>
+                  </div>
+                  <div class="small-6 column">
+                     <button type="submit" class="expand radius no-margin" ng-click="vm.changePassword()" translate>Submit</button>
+                  </div>
+               </div>
+            </div>
+         </form>
+      </div>
+   </div>
+
+   <!-- delete account -->
+   <div class="small-12 medium-6 large-4 column left space-default-top-small-only">
+      <div class="row">
+         <div class="small-12 column">
+            <h2 translate translate-comment="headline">Delete Account</h2>
+         </div>
+         <!-- show button -->
+         <div class="small-12 column" ng-hide="vm.isDeletionActive">
+            <button type="submit" class="expand radius no-margin alert" ng-click="vm.setDeletionActive(true)" translate>Submit</button>
+         </div>
+         <form name="vm.deleteUserForm" novalidate ng-show="vm.isDeletionActive">
+            <!-- password -->
+            <div class="small-12 column">
+               <input name="password" ng-model="vm.delete.password" type="password" placeholder="{{'Password' | translate}}"
+                      class="radius" required
+                      ng-class="{'error': (vm.deleteUserForm.$submitted || vm.deleteUserForm.password.$dirty) && vm.deleteUserForm.password.$invalid}"/>
+
+               <div ng-messages="vm.deleteUserForm.password.$error" ng-if="vm.deleteUserForm.$submitted || vm.deleteUserForm.password.$dirty"
+                    ng-messages-multiple="ng-messages-multiple">
+                  <small class="error" ng-message="required" translate>This field is mandatory.</small>
+               </div>
+            </div>
+            <!-- buttons -->
+            <div class="small-12 column">
+               <div class="row">
+                  <div class="small-6 column">
+                     <button type="button" class="expand radius no-margin" ng-click="vm.closeDeletion()" translate>Cancel</button>
+                  </div>
+                  <div class="small-6 column">
+                     <button type="submit" class="expand radius no-margin alert" ng-click="vm.deleteAccount()" translate>Submit</button>
+                  </div>
+               </div>
+            </div>
+         </form>
+      </div>
+   </div>
+
 </div>

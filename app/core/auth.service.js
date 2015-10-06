@@ -8,9 +8,10 @@
    /** @ngAnotate */
    function AuthService($rootScope, $state, FirebaseService, SessionService, MODULE, ROLE) {
 
-      var authData = FirebaseService.getAuth().$getAuth();
-      FirebaseService.getAuth().$onAuth(function (newAuthData) {
-         authData = newAuthData;
+      var user = __loadUser(FirebaseService.getAuth().$getAuth());
+
+      FirebaseService.getAuth().$onAuth(function (authData) {
+         user = __loadUser(authData);
 
          if (activeModule) {
             checkAccess(activeModule);
@@ -40,7 +41,7 @@
       ////////////
 
       function getUser() {
-         return authData === null ? null : FirebaseService.getUsers()[authData.uid];
+         return user;
       }
 
       function canAccess(module) {
@@ -48,7 +49,7 @@
             return true;
          }
 
-         return authData !== null && ACCESS_RIGHTS[module].indexOf(getUser().role) !== -1;
+         return user !== null && ACCESS_RIGHTS[module].indexOf(user.role) !== -1;
       }
 
       function checkAccess(module) {
@@ -59,6 +60,17 @@
          } else {
             SessionService.setPageLoaded(true);
          }
+      }
+
+      ////////////
+
+      function __loadUser(authData) {
+         var user = authData === null ? null : FirebaseService.getUsers()[authData.uid];
+         if (user) {
+            user.uid = authData.uid;
+            user.mail = FirebaseService.getLogins()[user.login].mail;
+         }
+         return user;
       }
 
    }

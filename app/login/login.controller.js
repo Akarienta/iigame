@@ -27,11 +27,8 @@
       };
 
       // fields
-      vm.users = FirebaseService.getUsers();
       vm.logins = FirebaseService.getLogins();
       vm.user = AuthService.getUser();
-      vm.loginForm = {};
-      vm.resetForm = {};
       vm.template = -1;
       vm.auth = {};
       vm.reset = {};
@@ -113,14 +110,24 @@
 
       ////////////
 
-      function __clearLoginForm() {
-         vm.auth.login = '';
+      function __clearLoginForm(notClearLogin) {
+         if (!notClearLogin) {
+            vm.auth.login = '';
+         }
          vm.auth.password = '';
          vm.rememberLogin = null;
+
+         if (angular.isDefined(vm.loginForm)) {
+            vm.loginForm.$setPristine()
+         }
       }
 
       function __clearResetForm() {
          vm.reset.mail = '';
+
+         if (angular.isDefined(vm.resetForm)) {
+            vm.resetForm.$setPristine()
+         }
       }
 
       function __loadCookie() {
@@ -138,7 +145,7 @@
                break;
             case 'INVALID_PASSWORD':
                msg = gettextCatalog.getString('Invalid password.');
-               vm.auth.password = '';
+               __clearLoginForm(true);
                break;
          }
 

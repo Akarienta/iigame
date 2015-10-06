@@ -6,7 +6,7 @@
       .controller('UsersCtrl', UsersCtrl);
 
    /** @ngAnotate */
-   function UsersCtrl($log, FirebaseService, AuthService, AlertsService, gettextCatalog, ROLE, MODULE) {
+   function UsersCtrl($log, FirebaseService, AuthService, AlertsService, SessionService, gettextCatalog, ROLE, MODULE) {
 
       AuthService.checkAccess(MODULE.USERS);
 
@@ -15,11 +15,8 @@
       // fields
       vm.users = FirebaseService.getUsers();
       vm.logins = FirebaseService.getLogins();
-      console.log('here ' + FirebaseService.areUsersDisabled());
       vm.areUsersDisabled = FirebaseService.areUsersDisabled();
       vm.addingUser = false;
-      vm.areUsersDisabled = true;
-      vm.userForm = {};
       vm.newUser = {};
       vm.newUser.password = {};
       vm.newUser.role = null;
@@ -30,14 +27,14 @@
       vm.addUser = addUser;
       vm.getFirebaseSecurityUrl = getFirebaseSecurityUrl;
 
-      console.log(vm.users);
-
       ////////////
 
       function createUser() {
          if (vm.userForm.$invalid) {
             return;
          }
+
+         SessionService.setPageLoaded(false);
 
          FirebaseService.getAuth().$createUser({
             email: vm.newUser.mail,
@@ -52,6 +49,7 @@
          }).finally(function () {
             __clearForm();
             addUser(false);
+            SessionService.setPageLoaded(true);
          });
       }
 

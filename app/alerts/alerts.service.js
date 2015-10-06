@@ -8,11 +8,14 @@
    /** @ngAnotate */
    function AlertsService() {
       var alerts = [];
+      var clearOnStateChange = true;
+
       var service = {
          addAlert: addAlert,
          removeAlert: removeAlert,
          getAlerts: getAlerts,
-         cleanAlerts: cleanAlerts
+         cleanAlerts: cleanAlerts,
+         notClearOnStateChange: notClearOnStateChange
       };
 
       return service;
@@ -35,7 +38,15 @@
       }
 
       function cleanAlerts() {
-         alerts = [];
+         if (clearOnStateChange) {
+            alerts = [];
+         } else {
+            clearOnStateChange = true;
+         }
+      }
+
+      function notClearOnStateChange() {
+         clearOnStateChange = false;
       }
 
    }

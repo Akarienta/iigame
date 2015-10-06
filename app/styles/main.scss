@@ -62,25 +62,22 @@ div.panel.form {
    display: inline-block;
 }
 
-.space {
-   &-default {
-      &-top {
-         margin-top: rem-calc($space-size);
-      }
-      &-bottom {
-         margin-bottom: rem-calc($space-size);
-      }
-   }
+@mixin space($name, $size) {
+   @each $side in top, left, bottom, right {
+      .space-#{$name}-#{$side} {
+         margin-#{$side}: $size;
 
-   &-small {
-      &-top {
-         margin-top: rem-calc($space-size/2);
-      }
-      &-bottom {
-         margin-bottom: rem-calc($space-size/2);
+         &-small-only {
+            @media #{$small-only} {
+               margin-#{$side}: $size;
+            }
+         }
       }
    }
 }
+
+@include space(default, $form-spacing);
+@include space(larger, $form-spacing*2);
 
 .login-space {
    margin-top: rem-calc($space-size/4);
