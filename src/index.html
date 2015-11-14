@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<head>
+   <title translate translate-comment="app name">I&I Game</title>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+   <!-- build:css(.) css/vendor.min.css -->
+   <!-- bower:css -->
+   <link rel="stylesheet" href="bower_components/foundation-icon-fonts/foundation-icons.css" />
+   <!-- endbower -->
+   <!-- endbuild -->
+   <!-- build:css(.tmp) css/style.min.css -->
+   <link rel="stylesheet" href="styles/main.css">
+   <!-- endbuild -->
+</head>
+<body ng-app="iigame" ng-controller="CoreCtrl as coreVm" ng-strict-di>
+   <!-- app not loaded -->
+   <div class="row">
+      <div class="small-12 column no-menu" ng-include="'spinner.html'" ng-if="!coreVm.isAppLoaded()"></div>
+   </div>
+   <!-- app loaded -->
+   <div class="off-canvas-wrap" ng-if="coreVm.isAppLoaded()">
+      <div class="inner-wrap">
+         <nav class="tab-bar">
+            <section class="left-small">
+               <a class="left-off-canvas-toggle menu-icon"><span></span></a>
+            </section>
+
+            <section class="right-small">
+               <a class="right-off-canvas-toggle menu-icon"><span></span></a>
+            </section>
+         </nav>
+
+         <div ng-include="'menu.html'"></div>
+
+         <section class="main-section">
+            <div class="row">
+               <!-- page not loaded -->
+               <div class="small-12 column" ng-show="!coreVm.isPageLoaded()" ng-include="'spinner.html'"></div>
+               <!-- page loaded -->
+               <div class="small-12 column space-larger-bottom" ng-show="coreVm.isPageLoaded()" ui-view></div>
+            </div>
+         </section>
+
+         <a class="exit-off-canvas"></a>
+      </div>
+   </div>
+
+   <!-- build:js(.) js/vendor.min.js -->
+   <!-- bower:js -->
+   <!-- endbower -->
+   <!-- endbuild -->
+
+   <!-- build:js(.tmp) js/scripts.min.js -->
+   <!-- ngsrc -->
+   <!-- endbuild -->
+
+</body>
+</html>

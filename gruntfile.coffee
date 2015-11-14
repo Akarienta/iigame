@@ -4,8 +4,9 @@ module.exports = (grunt) ->
 
    # paths config
    appConfig =
-      app: 'app'
-      dist: 'dist'
+      app: 'src'
+      dist: 'build'
+      temp: '.tmp'
 
    # configuration
    grunt.initConfig
@@ -14,20 +15,45 @@ module.exports = (grunt) ->
 
       # grunt clean
       clean:
-         dev: '.tmp'
+         dev: '<%= config.temp %>'
          dist: [
             '<%= config.dist %>'
-            '.tmp'
+            '<%= config.temp %>'
          ]
-         sass: '.tmp/styles'
-         coffee: '.tmp/scripts'
+         sass: '<%= config.temp %>/styles'
+         coffee: '<%= config.temp %>/scripts'
 
       # auto insertion of scrips from bower_components
       wiredep:
-         app:
-            src: '<%= config.app %>/index.html'
+         all:
+            expand: true
+            src: '<%= config.temp %>/index.html'
             exclude: 'foundation.css'
             ignorePath: /\.\.\//
+
+      html2js:
+         options:
+            module: 'iigame.core'
+            existingModule: true
+            quoteChar: '\''
+            useStrict: true
+            rename: (moduleName) ->
+               names = moduleName.split('/')
+               names[names.length - 1]
+            singleModule: true
+            htmlmin:
+               collapseWhitespace: true,
+               removeComments: true
+         main:
+            src: ['<%= config.app %>/**/*.html', '!<%= config.app %>/index.html']
+            dest: '<%= config.temp %>/core/templates.js'
+
+      # auto insertion of angular scrips in correct order
+      ngsrc:
+         all:
+            cwd: '<%= config.temp %>/',
+            src: ['core/app.module.js', '**/*.js', '**/*.spec.js'],
+            dest: ['<%= config.temp %>/index.html']
 
       # grunt sass
       sass:
@@ -41,18 +67,20 @@ module.exports = (grunt) ->
                expand: true
                cwd: '<%= config.app %>/styles'
                src: 'main.scss'
-               dest: '.tmp/styles'
+               dest: '<%= config.temp %>/styles'
                ext: '.css'
             ]
 
       # adds browser prefixes
       autoprefixer:
+         options:
+            singleQuotes: true
          all:
             files: [
                expand: true,
-               cwd: '.tmp/styles'
+               cwd: '<%= config.temp %>/styles'
                src: '**/*.css',
-               dest: '.tmp/styles'
+               dest: '<%= config.temp %>/styles'
             ]
 
       # auto annotation of AngularJS injection
@@ -62,7 +90,7 @@ module.exports = (grunt) ->
                expand: true
                cwd: '<%= config.app %>'
                src: '**/*.js'
-               dest: '.tmp'
+               dest: '<%= config.temp %>'
             ]
 
       # grunt connect
@@ -79,7 +107,6 @@ module.exports = (grunt) ->
 
                   middlewares.push connect.static '.tmp'
                   middlewares.push connect().use '/bower_components', connect.static './bower_components'
-                  #middlewares.push connect.static appConfig.app
 
                   return middlewares
 
@@ -87,13 +114,13 @@ module.exports = (grunt) ->
       watch:
          bower:
             files: 'bower.json'
-            tasks: 'wiredep'
+            tasks: ['copy:index', 'wiredep', 'ngAnnotate', 'ngsrc']
          html:
             files: '<%= config.app %>/**/*.html'
             tasks: 'copy:dev'
          js:
             files: '<%= config.app %>/**/*.js'
-            tasks: ['ngAnnotate']
+            tasks: ['copy:index', 'wiredep', 'ngAnnotate', 'ngsrc']
          sass:
             files: '<%= config.app %>/**/*.scss'
             tasks: ['clean:sass', 'sass:compile', 'autoprefixer']
@@ -102,22 +129,37 @@ module.exports = (grunt) ->
                livereload: '<%= connect.options.livereload %>'
             files: [
                '<%= config.app %>/**/*.html'
-               '.tmp/styles/**/*.css'
-               '.tmp/scripts/**/*.js'
+               '<%= config.temp %>/styles/**/*.css'
+               '<%= config.temp %>/scripts/**/*.js'
                '<%= config.app %>/images/**/*.{png,jpg,jpeg,gif,svg}'
             ]
 
       # grunt copy
       copy:
+         index:
+            files: [
+               expand: true,
+               cwd: '<%= config.app %>',
+               src: 'index.html',
+               dest: '<%= config.temp %>'
+            ]
          dist:
             files: [
                {
-                  # pages and jsons
+                  # index
                   expand: true,
-                  flatten: true,
-                  cwd: '<%= config.app %>',
-                  src: '**/*.{html,json}',
+                  cwd: '<%= config.temp %>',
+                  src: ['index.html'],
                   dest: '<%= config.dist %>'
+               }
+               {
+                  # config
+                  expand: true,
+                  cwd: '<%= config.app %>',
+                  src: ['config.example.json'],
+                  dest: '<%= config.dist %>'
+                  rename: (dest, src) ->
+                     dest + '/' + src.replace('.example', '')
                }
                {
                   # images
@@ -149,28 +191,53 @@ module.exports = (grunt) ->
                   expand: true,
                   flatten: true,
                   cwd: '<%= config.app %>',
-                  src: '**/*.{html,json}',
-                  dest: '.tmp'
+                  src: ['**/*.{html,json}', '!index.html', '!config.example.json'],
+                  dest: '<%= config.temp %>'
                }
                {
                   # icons
                   expand: true,
                   flatten: true,
                   cwd: 'bower_components',
-                  dest: '.tmp/fonts',
+                  dest: '<%= config.temp %>/fonts',
                   src: 'foundation-icon-fonts/*.{ttf,eot,woff,svg}'
                }
             ]
 
       # preparation of CSS and JS minification
       useminPrepare:
-         html: '<%= config.app %>/**/*.html'
+         html: '<%= config.temp %>/index.html'
          options:
             dest: '<%= config.dist %>'
+            flow:
+               html:
+                  steps:
+                     js: ['concat', 'uglify']
+                     css: ['cssmin']
+
+      # rename files because of browser cache
+      filerev:
+         dist:
+            src: [
+               '<%= config.dist %>/js/**/*.js',
+               '<%= config.dist %>/css/**/*.css',
+               '<%= config.dist %>/images/**/*.{png,jpg,jpeg,gif,webp,svg}',
+               '<%= config.dist %>/fonts/**/*'
+            ]
 
       # CSS and JS minification
       usemin:
          html: '<%= config.dist %>/**/*.html'
+         css: '<%= config.dist %>/css/**/*.css'
+         js: '<%= config.dist %>/js/**/*.js'
+         options:
+            assetsDirs: [
+               '<%= config.dist %>',
+               '<%= config.dist %>/images',
+               '<%= config.dist %>/css'
+            ]
+            patterns:
+               js: [[/(images\/[^''""]*\.(png|jpg|jpeg|gif|webp|svg))/g, 'Replacing references to images']]
 
       # HTML minification
       htmlmin:
@@ -207,10 +274,12 @@ module.exports = (grunt) ->
 
    grunt.registerTask 'serve', [
       'clean:dev'
+      'copy:index'
       'wiredep'
+      'ngAnnotate'
+      'ngsrc'
       'sass'
       'autoprefixer'
-      'ngAnnotate'
       'copy:dev'
       'connect:livereload'
       'watch'
@@ -218,15 +287,19 @@ module.exports = (grunt) ->
 
    grunt.registerTask 'build', [
       'clean:dist'
+      'copy:index'
       'wiredep'
+      'html2js'
+      'ngAnnotate'
+      'ngsrc'
       'sass'
       'autoprefixer'
-      'ngAnnotate'
       'copy:dist'
       'useminPrepare'
       'concat'
       'cssmin'
       'uglify'
+      'filerev'
       'usemin'
       'htmlmin'
    ]
