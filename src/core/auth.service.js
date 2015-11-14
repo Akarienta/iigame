@@ -5,7 +5,7 @@
       .module('iigame.core')
       .service('AuthService', AuthService);
 
-   /** @ngAnotate */
+   /** @ngInject */
    function AuthService($rootScope, $state, FirebaseService, SessionService, MODULE, ROLE) {
 
       var user = __loadUser(FirebaseService.getAuth().$getAuth());
@@ -33,7 +33,8 @@
       var service = {
          getUser: getUser,
          canAccess: canAccess,
-         checkAccess: checkAccess
+         checkAccess: checkAccess,
+         setMail: setMail
       };
 
       return service;
@@ -60,6 +61,10 @@
          } else {
             SessionService.setPageLoaded(true);
          }
+      }
+
+      function setMail(newMail) {
+         user.mail = newMail;
       }
 
       ////////////

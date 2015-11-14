@@ -5,7 +5,7 @@
       .module('iigame.passwords', [])
       .config(config);
 
-   /** @ngAnotate */
+   /** @ngInject */
    function config($stateProvider) {
       $stateProvider.state('passwords', {
          url: '/passwords',

@@ -5,8 +5,8 @@
       .module('iigame.core')
       .controller('CoreCtrl', CoreCtrl);
 
-   /** @ngAnotate */
-   function CoreCtrl(FirebaseService, SessionService) {
+   /** @ngInject */
+   function CoreCtrl($q, FirebaseService, SecurityRulesService, SessionService) {
 
       var vm = this;
 
@@ -26,7 +26,10 @@
       ////////////
 
       function __init() {
-         FirebaseService.getLoadedPromise().then(function () {
+         $q.all([
+            FirebaseService.getLoadedPromise(),
+            SecurityRulesService.getLoadedPromise()
+         ]).then(function () {
             appLoaded = true;
          });
       }

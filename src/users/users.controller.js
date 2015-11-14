@@ -5,8 +5,8 @@
       .module('iigame.users')
       .controller('UsersCtrl', UsersCtrl);
 
-   /** @ngAnotate */
-   function UsersCtrl($log, FirebaseService, AuthService, AlertsService, SessionService, gettextCatalog, ROLE, MODULE) {
+   /** @ngInject */
+   function UsersCtrl($log, FirebaseService, AuthService, AlertsService, SessionService, SecurityRulesService, gettextCatalog, ROLE, MODULE) {
 
       AuthService.checkAccess(MODULE.USERS);
 
@@ -20,12 +20,17 @@
       vm.newUser = {};
       vm.newUser.password = {};
       vm.newUser.role = null;
+      vm.data = {};
+      vm.areRulesShown = false;
 
       // methods
       vm.createUser = createUser;
       vm.createUserCancel = createUserCancel;
       vm.addUser = addUser;
       vm.getFirebaseSecurityUrl = getFirebaseSecurityUrl;
+      vm.getAllowedJSON = getAllowedJSON;
+      vm.getDisabledJSON = getDisabledJSON;
+      vm.changeRulesVisibility = changeRulesVisibility;
 
       ////////////
 
@@ -66,6 +71,18 @@
          return FirebaseService.getSecurityUrl();
       }
 
+      function getAllowedJSON() {
+         return __objectToJSON(SecurityRulesService.getAllowedRules());
+      }
+
+      function getDisabledJSON() {
+         return __objectToJSON(SecurityRulesService.getDisabledRules());
+      }
+
+      function changeRulesVisibility() {
+         vm.areRulesShown = !vm.areRulesShown;
+      }
+
       ////////////
 
       function __saveUser(userData) {
@@ -91,6 +108,10 @@
          vm.newUser.password.confirm = '';
 
          vm.userForm.$setPristine();
+      }
+
+      function __objectToJSON(object) {
+         return JSON.stringify(object, null, 2);
       }
 
    }

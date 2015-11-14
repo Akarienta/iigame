@@ -5,7 +5,7 @@
       .module('iigame.login')
       .controller('LoginCtrl', LoginCtrl);
 
-   /** @ngAnotate */
+   /** @ngInject */
    function LoginCtrl($rootScope, $cookies, AuthService, FirebaseService, AlertsService, SessionService, gettextCatalog, MODULE) {
 
       AuthService.checkAccess(MODULE.LOGIN);

@@ -5,7 +5,7 @@ module.exports = (grunt) ->
    # paths config
    appConfig =
       app: 'src'
-      dist: 'build'
+      dist: 'dist'
       temp: '.tmp'
 
    # configuration
@@ -105,7 +105,8 @@ module.exports = (grunt) ->
                middleware: (connect) ->
                   middlewares = []
 
-                  middlewares.push connect.static '.tmp'
+                  middlewares.push connect.static '.tmp', {hidden: true}
+                  middlewares.push connect().use '/lib', connect.static './lib'
                   middlewares.push connect().use '/bower_components', connect.static './bower_components'
 
                   return middlewares
@@ -115,8 +116,13 @@ module.exports = (grunt) ->
          bower:
             files: 'bower.json'
             tasks: ['copy:index', 'wiredep', 'ngAnnotate', 'ngsrc']
-         html:
-            files: '<%= config.app %>/**/*.html'
+         index:
+            files: '<%= config.app %>/index.html'
+            tasks: ['copy:index', 'wiredep', 'ngAnnotate', 'ngsrc']
+         htmlAndJson:
+            options:
+               dot: true
+            files: ['<%= config.app %>/**/*.{html,json}', '!<%= config.app %>/index.html', '!<%= config.app %>/config.example.json']
             tasks: 'copy:dev'
          js:
             files: '<%= config.app %>/**/*.js'
@@ -128,7 +134,9 @@ module.exports = (grunt) ->
             options:
                livereload: '<%= connect.options.livereload %>'
             files: [
-               '<%= config.app %>/**/*.html'
+               '<%= config.temp %>/index.html'
+               '!<%= config.app %>/index.html'
+               '<%= config.app %>/**/*.{html,json}'
                '<%= config.temp %>/styles/**/*.css'
                '<%= config.temp %>/scripts/**/*.js'
                '<%= config.app %>/images/**/*.{png,jpg,jpeg,gif,svg}'
@@ -149,17 +157,27 @@ module.exports = (grunt) ->
                   # index
                   expand: true,
                   cwd: '<%= config.temp %>',
-                  src: ['index.html'],
+                  src: 'index.html',
                   dest: '<%= config.dist %>'
                }
                {
                   # config
                   expand: true,
                   cwd: '<%= config.app %>',
-                  src: ['config.example.json'],
+                  src: 'config.example.json',
                   dest: '<%= config.dist %>'
                   rename: (dest, src) ->
                      dest + '/' + src.replace('.example', '')
+               }
+               {
+                  # jsons
+                  expand: true,
+                  cwd: '<%= config.app %>',
+                  src: ['**/*.json', '!config.example.json', '!config.json'],
+                  dest: '<%= config.dist %>'
+                  rename: (dest, src) ->
+                     dest + '/' + src.replace('.example', '')
+                  dot: true
                }
                {
                   # images
@@ -193,6 +211,7 @@ module.exports = (grunt) ->
                   cwd: '<%= config.app %>',
                   src: ['**/*.{html,json}', '!index.html', '!config.example.json'],
                   dest: '<%= config.temp %>'
+                  dot: true
                }
                {
                   # icons

@@ -5,7 +5,7 @@
       .module('iigame.filters')
       .filter('orderObjectBy', orderObjectBy);
 
-   /** @ngAnotate */
+   /** @ngInject */
    function orderObjectBy() {
       return function (items, field, reverse) {
          var filtered = [];

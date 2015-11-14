@@ -5,7 +5,7 @@
       .module('iigame.passwords')
       .controller('PasswordsCtrl', PasswordsCtrl);
 
-   /** @ngAnotate */
+   /** @ngInject */
    function PasswordsCtrl(AuthService, MODULE) {
 
       AuthService.checkAccess(MODULE.PASSWORDS);

@@ -5,7 +5,7 @@
       .module('iigame.menu')
       .controller('MenuCtrl', MenuCtrl);
 
-   /** @ngAnotate */
+   /** @ngInject */
    function MenuCtrl($rootScope, AuthService, MODULE) {
 
       var vm = this;

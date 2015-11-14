@@ -5,7 +5,7 @@
       .module('iigame.about', [])
       .config(config);
 
-   /** @ngAnotate */
+   /** @ngInject */
    function config($stateProvider) {
       $stateProvider.state('about', {
          url: '/about',

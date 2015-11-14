@@ -5,7 +5,7 @@
       .module('iigame.check', [])
       .config(config);
 
-   /** @ngAnotate */
+   /** @ngInject */
    function config($stateProvider) {
       $stateProvider.state('check', {
          url: '/check',

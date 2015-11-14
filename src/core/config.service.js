@@ -5,13 +5,14 @@
       .module('iigame.core')
       .service('ConfigService', ConfigService);
 
-   /** @ngAnotate */
+   /** @ngInject */
    function ConfigService($http) {
 
       var CONFIG_FILE = 'config.json';
       var service = {
          getLanguage: getLanguage,
-         getFireBaseAppName: getFireBaseAppName
+         getFireBaseAppName: getFireBaseAppName,
+         getFile: getFile
       };
 
       return service;
@@ -24,6 +25,12 @@
 
       function getFireBaseAppName() {
          return __getParam('firebaseAppName');
+      }
+
+      function getFile() {
+         return $http.get(CONFIG_FILE).then(function (response) {
+            return response.data;
+         });
       }
 
       ////////////

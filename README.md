@@ -4,5 +4,3 @@
 
 ### Licence
 The MIT License
-
-**Free Software, Hell Yeah!**

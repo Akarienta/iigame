@@ -5,7 +5,7 @@
       .module('iigame.alerts')
       .service('AlertsService', AlertsService);
 
-   /** @ngAnotate */
+   /** @ngInject */
    function AlertsService() {
       var alerts = [];
       var clearOnStateChange = true;

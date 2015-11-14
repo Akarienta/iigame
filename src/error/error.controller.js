@@ -5,7 +5,7 @@
       .module('iigame.error')
       .controller('ErrorCtrl', ErrorCtrl);
 
-   /** @ngAnotate */
+   /** @ngInject */
    function ErrorCtrl(SessionService) {
 
       SessionService.setPageLoaded(true);

@@ -5,7 +5,7 @@
       .module('iigame.core')
       .service('SessionService', SessionService);
 
-   /** @ngAnotate */
+   /** @ngInject */
    function SessionService() {
 
       var pageLoaded = false;

@@ -1,0 +1,11 @@
+.login-space {
+   margin-top: rem-calc($space-size/4);
+
+   @media #{$medium-up} {
+      margin-top: rem-calc($space-size/2);
+   }
+
+   @media #{$large-up} {
+      margin-top: rem-calc($space-size);
+   }
+}

@@ -1,0 +1,21 @@
+{
+   "rules": {
+      "accounts": {
+         ".read": true,
+         "logins": {
+            "$login": {
+               ".write": "auth !== null && root.child('accounts').child('users').child(auth.uid).child('login').val() === $login"
+            }
+         },
+         "users": {
+            "$uid": {
+               ".write": "auth !== null && auth.uid === $uid"
+            }
+         }
+      },
+      "passwords": {
+         ".read": "auth !== null && root.child('accounts').child('users').child(auth.uid).child('role').val() === 'sub'",
+         ".write": "auth !== null && root.child('accounts').child('users').child(auth.uid).child('role').val() === 'sub'"
+      }
+   }
+}

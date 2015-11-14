@@ -1,0 +1,81 @@
+$icon-size: 24px;
+$space-size: 50px;
+
+////////////
+
+.off-canvas-wrap {
+   .inner-wrap {
+      min-height: 100vh;
+   }
+}
+
+table {
+   width: 100%;
+   margin-left: auto;
+   margin-right: auto;
+   max-width: initial;
+   table-layout: fixed;
+
+   th.tools-1 {
+      width: rem-calc(45px);
+      text-align: center;
+   }
+}
+
+.icon {
+   margin: 0;
+   padding: 0;
+   width: rem-calc($icon-size);
+   height: rem-calc($icon-size);
+   line-height: rem-calc($icon-size);
+   font-size: rem-calc($icon-size*0.75);
+   @include radius;
+}
+
+code, table {
+   @include radius;
+}
+
+.error {
+   border-radius: 0 0 $global-radius $global-radius;
+}
+
+input.error {
+   border-color: $alert-color;
+   border-bottom-right-radius: 0 !important;
+   border-bottom-left-radius: 0 !important;
+}
+
+div.panel.form {
+   background-color: scale_color($body-bg, $lightness: -50%);
+   box-shadow: 0 0.5rem 0.8rem 0.5rem rgba(0, 0, 0, 0.2);
+
+   h1 {
+      padding-bottom: $form-spacing*1.5;
+   }
+}
+
+.inline {
+   display: inline-block;
+}
+
+@mixin space($name, $size) {
+   @each $side in top, left, bottom, right {
+      .space-#{$name}-#{$side} {
+         margin-#{$side}: $size;
+
+         &-small-only {
+            @media #{$small-only} {
+               margin-#{$side}: $size;
+            }
+         }
+      }
+   }
+}
+
+@include space(default, $form-spacing);
+@include space(larger, $form-spacing*2);
+
+.no-margin {
+   margin: 0 !important;
+}

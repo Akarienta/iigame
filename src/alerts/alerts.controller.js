@@ -5,7 +5,7 @@
       .module('iigame.alerts')
       .controller('AlertsCtrl', AlertsCtrl);
 
-   /** @ngAnotate */
+   /** @ngInject */
    function AlertsCtrl(AlertsService) {
       var vm = this;
 

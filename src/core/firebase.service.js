@@ -5,7 +5,7 @@
       .module('iigame.core')
       .service('FirebaseService', FirebaseService);
 
-   /** @ngAnotate */
+   /** @ngInject */
    function FirebaseService($q, $firebaseAuth, $firebaseObject, ConfigService) {
 
       var loadedPromise = $q.defer();

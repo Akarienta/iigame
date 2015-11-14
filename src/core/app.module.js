@@ -1,7 +1,6 @@
 (function () {
    'use strict';
 
-   /** @namespace iigame */
    angular
       .module('iigame', [
          'ui.router',
@@ -11,6 +10,7 @@
          'ngMessages',
          'ngPassword',
          'ngCookies',
+         'hljs',
          'iigame.error',
          'iigame.constants',
          'iigame.alerts',
@@ -27,14 +27,14 @@
       .config(config)
       .run(run);
 
-   /** @ngAnotate */
+   /** @ngInject */
    function config($urlRouterProvider) {
       $urlRouterProvider
          .when('', '/check')
          .otherwise('/404');
    }
 
-   /** @ngAnotate */
+   /** @ngInject */
    function run($rootScope, ConfigService, AlertsService, SessionService, gettextCatalog) {
       ConfigService.getLanguage().then(function (lang) {
          gettextCatalog.setCurrentLanguage(lang);

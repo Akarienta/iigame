@@ -5,7 +5,7 @@
       .module('iigame.error', [])
       .config(config);
 
-   /** @ngAnotate */
+   /** @ngInject */
    function config($stateProvider) {
       $stateProvider
          .state('403', {

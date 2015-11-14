@@ -5,7 +5,7 @@
       .module('iigame.about')
       .controller('AboutCtrl', AboutCtrl);
 
-   /** @ngAnotate */
+   /** @ngInject */
    function AboutCtrl(AuthService, MODULE) {
 
       AuthService.checkAccess(MODULE.ABOUT);

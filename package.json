@@ -1,8 +1,8 @@
 {
   "name": "iigame",
   "version": "0.1.0",
-  "description": "Sexual interrogation game, loosely inspired by The Administration Series from Manna Francis",
-  "repository": "https://github.com/Akarienta/iigame",
+  "description": "Sexual interrogation game, loosely inspired by The Administration Series from Manna Francis.",
+  "repository": "https://github.com/akarienta/iigame",
   "license": "MIT",
   "devDependencies": {
     "grunt": "^0.4.5",
@@ -25,5 +25,6 @@
     "grunt-wiredep": "^2.0.0",
     "load-grunt-tasks": "^3.2.0",
     "time-grunt": "^1.2.1"
-  }
+  },
+  "dependencies": {}
 }

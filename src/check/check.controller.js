@@ -5,7 +5,7 @@
       .module('iigame.check')
       .controller('CheckCtrl', CheckCtrl);
 
-   /** @ngAnotate */
+   /** @ngInject */
    function CheckCtrl(AuthService, MODULE) {
 
       AuthService.checkAccess(MODULE.CHECK);

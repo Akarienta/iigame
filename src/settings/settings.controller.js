@@ -5,7 +5,7 @@
       .module('iigame.settings')
       .controller('SettingsCtrl', SettingsCtrl);
 
-   /** @ngAnotate */
+   /** @ngInject */
    function SettingsCtrl($q, $state, AuthService, SessionService, FirebaseService, AlertsService, gettextCatalog, MODULE) {
 
       AuthService.checkAccess(MODULE.SETTINGS);
@@ -26,6 +26,7 @@
       vm.changeMail = changeMail;
       vm.changePassword = changePassword;
       vm.deleteAccount = deleteAccount;
+      vm.getMail = getMail;
 
       ////////////
 
@@ -54,11 +55,51 @@
       }
 
       function changeMail() {
-         // TODO
+         if (vm.changeMailForm.$invalid) {
+            return;
+         }
+
+         SessionService.setPageLoaded(false);
+
+         FirebaseService.getAuth().$changeEmail({
+            oldEmail: AuthService.getUser().mail,
+            newEmail: vm.mail.new,
+            password: vm.mail.password
+         })
+            .then(__changeLoginMetadata)
+            .then(function() {
+               AuthService.setMail(vm.mail.new);
+               AlertsService.addAlert('success', gettextCatalog.getString('E-mail for user {{login}} has been successfully changed.', {login: AuthService.getUser().login}));
+               __clearChangeMailForm();
+            })
+            .catch(function (error) {
+               AlertsService.addAlert('alert', __getChangeMailErrorMessage(error));
+            }).finally(function () {
+               SessionService.setPageLoaded(true);
+            });
       }
 
       function changePassword() {
-         // TODO
+         if (vm.changePasswdForm.$invalid) {
+            return;
+         }
+
+         SessionService.setPageLoaded(false);
+
+         FirebaseService.getAuth().$changePassword({
+            email: AuthService.getUser().mail,
+            oldPassword: vm.password.old,
+            newPassword: vm.password.new
+         })
+            .then(function() {
+               AlertsService.addAlert('success', gettextCatalog.getString('Password for user {{login}} has been successfully changed.', {login: AuthService.getUser().login}));
+               __clearChangePasswordForm();
+            })
+            .catch(function (error) {
+               AlertsService.addAlert('alert', __getChangePasswordErrorMessage(error));
+            }).finally(function () {
+               SessionService.setPageLoaded(true);
+            });
       }
 
       function deleteAccount() {
@@ -81,10 +122,14 @@
             });
       }
 
+      function getMail() {
+         return AuthService.getUser().mail;
+      }
+
       ////////////
 
       function __clearDeleteUserForm() {
-         vm.delete.password = '';
+         vm.delete = {};
 
          vm.deleteUserForm.$setPristine();
       }
@@ -131,6 +176,54 @@
             email: AuthService.getUser().mail,
             password: vm.delete.password
          });
+      }
+
+      function __changeLoginMetadata() {
+         var logins = FirebaseService.getLogins();
+
+         logins[AuthService.getUser().login].mail = vm.mail.new;
+
+         return logins.$save();
+      }
+
+      function __getChangeMailErrorMessage(error) {
+         var msg = gettextCatalog.getString('Unable change e-mail for user {{login}}.', {login: AuthService.getUser().login});
+
+         switch (error.code) {
+            case 'INVALID_PASSWORD':
+               vm.mail.password = '';
+               vm.changeMailForm.$setPristine();
+               msg = gettextCatalog.getString('Invalid password.');
+               break;
+         }
+
+         return msg;
+      }
+
+      function __clearChangeMailForm() {
+         vm.mail = {};
+
+         vm.changeMailForm.$setPristine();
+      }
+
+      function __getChangePasswordErrorMessage(error) {
+         var msg = gettextCatalog.getString('Unable change password for user {{login}}.', {login: AuthService.getUser().login});
+
+         switch (error.code) {
+            case 'INVALID_PASSWORD':
+               vm.password.old = '';
+               vm.changePasswdForm.$setPristine();
+               msg = gettextCatalog.getString('Invalid password.');
+               break;
+         }
+
+         return msg;
+      }
+
+      function __clearChangePasswordForm() {
+         vm.password = {};
+
+         vm.changePasswdForm.$setPristine();
       }
 
    }

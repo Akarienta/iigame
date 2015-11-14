@@ -5,7 +5,7 @@
       .module('iigame.login', [])
       .config(config);
 
-   /** @ngAnotate */
+   /** @ngInject */
    function config($stateProvider) {
       $stateProvider.state('login', {
          url: '/login',

@@ -5,7 +5,7 @@
       .module('iigame.users', [])
       .config(config);
 
-   /** @ngAnotate */
+   /** @ngInject */
    function config($stateProvider) {
       $stateProvider.state('users', {
          url: '/users',
