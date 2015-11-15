@@ -18,9 +18,11 @@
          getAuth: getAuth,
          getUsers: getUsers,
          getLogins: getLogins,
-         getPasswords: getPasswords,
+         getEncryptedPasswords: getEncryptedPasswords,
+         getDecryptedPasswords: getDecryptedPasswords,
          getSecurityUrl: getSecurityUrl,
-         areUsersDisabled: areUsersDisabled
+         areUsersDisabled: areUsersDisabled,
+         reloadData: reloadData
       };
 
       __init();
@@ -45,8 +47,12 @@
          return data.logins;
       }
 
-      function getPasswords() {
-         return data.passwords;
+      function getEncryptedPasswords() {
+         return data.encryptedPasswords;
+      }
+
+      function getDecryptedPasswords() {
+         return data.decryptedPasswords;
       }
 
       function areUsersDisabled() {
@@ -55,6 +61,12 @@
 
       function getSecurityUrl() {
          return data.fireBaseUrl + '/?page=Security';
+      }
+
+      function reloadData() {
+         loadedPromise = $q.defer();
+
+         __init();
       }
 
       ////////////
@@ -72,6 +84,14 @@
          });
       }
 
+      function __loadAuth() {
+         return __getRef().then(function (ref) {
+            return $firebaseAuth(ref).$waitForAuth().then(function () {
+               return data.auth = $firebaseAuth(ref);
+            });
+         })
+      }
+
       function __loadData() {
          return $q.all([
             __getFirebaseObject('accounts/logins').then(function (logins) {
@@ -80,35 +100,48 @@
             __getFirebaseObject('accounts/users').then(function (users) {
                data.users = users;
             }),
-            __getFirebaseObject('passwords').then(function (passwords) {
-               data.passwords = passwords;
+            __getFirebaseObject('passwords/encrypted').then(function (passwords) {
+               data.encryptedPasswords = passwords;
             }),
-            __getRef().then(function (ref) {
-               return $firebaseAuth(ref).$waitForAuth().then(function() {
-                  return data.auth = $firebaseAuth(ref);
-               });
+            __getFirebaseObject('passwords/decrypted').then(function (passwords) {
+               data.decryptedPasswords = passwords;
             })
          ]);
       }
 
       function __areDataLoaded() {
          return $q.all([
-            data.users.$loaded(),
+            data.users.$loaded().catch(function () {
+               data.users = null;
+            }),
             data.logins.$loaded(),
-            data.passwords.$loaded()
+            data.encryptedPasswords.$loaded(),
+            data.decryptedPasswords.$loaded().catch(function () {
+               data.decryptedPasswords = null;
+            })
          ])
       }
 
       function __postLoadData() {
          return $q.all([
-            data.users.$save().catch(function () {
-               data.areUsersDisabled = true;
-            })
+            __disableUsers()
          ]);
       }
 
+      function __disableUsers() {
+         if (!data.users) {
+            data.areUsersDisabled = true;
+            return true;
+         }
+
+         return data.users.$save().catch(function () {
+            data.areUsersDisabled = true;
+         });
+      }
+
       function __init() {
-         __loadData()
+         __loadAuth()
+            .then(__loadData)
             .then(__areDataLoaded)
             .then(__postLoadData)
             .then(function () {

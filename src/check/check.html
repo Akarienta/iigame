@@ -1,10 +1,23 @@
+<!-- alerts -->
 <div class="row">
+   <div ng-include="'alerts.html'" ng-class="{'space-larger-top': vm.hasAlerts()}"></div>
+</div>
 
-   <!-- headline -->
-   <div class="small-12 column">
-      <h1 translate translate-comment="headline">Check</h1>
+<!-- logo -->
+<div class="row">
+   <div class="small-7 medium-4 large-3 column small-centered space-larger-bottom" ng-class="{'space-larger-top': !vm.hasAlerts()}">
+      <img src="images/logo.png" alt="Logo"/>
    </div>
+</div>
 
-   <!-- alerts -->
-   <div ng-include="'alerts.html'"></div>
+<!-- panel -->
+<div class="row">
+   <div class="small-12 medium-6 large-4 column small-centered">
+      <div class="panel form radius">
+         <!-- login -->
+         <div class="row" ng-if="vm.isTemplateVisible(vm.templates.login)" ng-include="'check.login.html'"></div>
+         <!-- result -->
+         <div class="row" ng-if="vm.isTemplateVisible(vm.templates.result)" ng-include="'check.result.html'"></div>
+      </div>
+   </div>
 </div>

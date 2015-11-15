@@ -79,7 +79,6 @@
             $cookies.put(LOGIN_COOKIE, rememberLogin ? login : '');
          }).catch(function (error) {
             AlertsService.addAlert('alert', __getLoginErrorMessage(error));
-         }).finally(function () {
             SessionService.setPageLoaded(true);
          });
       }

@@ -15,11 +15,21 @@
 
       // methods
       vm.close = close;
+      vm.ok = ok;
+      vm.nok = nok;
 
       ////////////
 
       function close() {
-         $modalInstance.close();
+         $modalInstance.close(false);
+      }
+
+      function ok() {
+         $modalInstance.close(true);
+      }
+
+      function nok() {
+         $modalInstance.close(false);
       }
 
    }

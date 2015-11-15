@@ -192,7 +192,7 @@ module.exports = (grunt) ->
                   dest: '<%= config.dist %>/favicon'
                }
                {
-                  # icons
+                  # fonts
                   expand: true,
                   flatten: true,
                   cwd: 'bower_components',
@@ -212,7 +212,14 @@ module.exports = (grunt) ->
                   dot: true
                }
                {
-                  # icons
+                  # images
+                  expand: true,
+                  cwd: '<%= config.app %>/images',
+                  src: '**/*.{png,jpg,jpeg,gif,svg}',
+                  dest: '<%= config.temp %>/images'
+               }
+               {
+                  # fonts
                   expand: true,
                   flatten: true,
                   cwd: 'bower_components',

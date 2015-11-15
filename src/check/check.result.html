@@ -1,0 +1,14 @@
+<div class="small-12 column text-center">
+   <h2 translate translate-comment="headline" class="no-padding" ng-class="vm.success ? 'success-color' : 'alert-color'">
+      {{vm.success ? ('SUCCESS'|translate) : ('FAILURE'|translate)}}
+   </h2>
+</div>
+<div class="small-12 column space-default-bottom space-default-top text-center">
+   {{vm.passwordText}}
+</div>
+<form name="vm.resultForm" novalidate>
+   <div class="small-12 column space-default-top">
+      <button ng-if="!vm.success" type="submit" class="expand radius no-margin" ng-click="vm.changeTemplate(vm.templates.login)" translate>Shit! I'll try again.</button>
+      <h3 ng-if="vm.success" class="text-center primary-color no-margin no-padding">Game Over</h3>
+   </div>
+</form>

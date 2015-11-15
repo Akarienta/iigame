@@ -8,21 +8,32 @@
    /** @ngInject */
    function AuthService($rootScope, $state, FirebaseService, SessionService, MODULE, ROLE) {
 
-      var user = __loadUser(FirebaseService.getAuth().$getAuth());
+      var user = null;
+      var savedAuthData = FirebaseService.getAuth().$getAuth();
+      __loadUser(savedAuthData);
 
       FirebaseService.getAuth().$onAuth(function (authData) {
-         user = __loadUser(authData);
-
-         if (activeModule) {
-            checkAccess(activeModule);
+         if (authData === savedAuthData) {
+            return;
          }
 
-         $rootScope.$emit('userUpdated');
+         savedAuthData = authData;
+         FirebaseService.reloadData();
+
+         FirebaseService.getLoadedPromise().then(function () {
+            __loadUser(authData);
+
+            if (activeModule) {
+               checkAccess(activeModule);
+            }
+
+            $rootScope.$emit('userUpdated');
+         });
       });
 
       var ACCESS_RIGHTS = {};
       ACCESS_RIGHTS[MODULE.CHECK] = [];
-      ACCESS_RIGHTS[MODULE.PASSWORDS] = ROLE.getAll();
+      ACCESS_RIGHTS[MODULE.PASSWORDS] = [ROLE.SUB];
       ACCESS_RIGHTS[MODULE.LOGIN] = [];
       ACCESS_RIGHTS[MODULE.USERS] = FirebaseService.areUsersDisabled() ? ROLE.getAll() : [];
       ACCESS_RIGHTS[MODULE.SETTINGS] = ROLE.getAll();
@@ -70,12 +81,13 @@
       ////////////
 
       function __loadUser(authData) {
-         var user = authData === null ? null : FirebaseService.getUsers()[authData.uid];
-         if (user) {
-            user.uid = authData.uid;
-            user.mail = FirebaseService.getLogins()[user.login].mail;
+         var userData = authData === null ? null : FirebaseService.getUsers()[authData.uid];
+         if (userData) {
+            userData.uid = authData.uid;
+            userData.mail = FirebaseService.getLogins()[userData.login].mail;
          }
-         return user;
+
+         user = userData;
       }
 
    }

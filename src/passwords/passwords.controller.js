@@ -6,7 +6,7 @@
       .controller('PasswordsCtrl', PasswordsCtrl);
 
    /** @ngInject */
-   function PasswordsCtrl(AuthService, FirebaseService, SessionService, AlertsService, ModalService, gettextCatalog, MODULE, PASSWORD_TYPE) {
+   function PasswordsCtrl($q, AuthService, FirebaseService, SessionService, AlertsService, ModalService, gettextCatalog, MODULE, PASSWORD_TYPE, md5) {
 
       AuthService.checkAccess(MODULE.PASSWORDS);
 
@@ -14,7 +14,8 @@
 
       // fields
       vm.password = {};
-      vm.passwords = FirebaseService.getPasswords();
+      vm.encryptedPasswords = FirebaseService.getEncryptedPasswords();
+      vm.decryptedPasswords = FirebaseService.getDecryptedPasswords();
       vm.addingPassword = false;
 
       // methods
@@ -23,6 +24,11 @@
       vm.addPassword = addPassword;
       vm.deletePassword = deletePassword;
       vm.openModal = ModalService.openPasswordDetailModal;
+
+      // password fields
+      vm.getencryptedPassword = getEncryptedPassword;
+      vm.getPasswordType = getPasswordType;
+      vm.getPasswordText = getPasswordText;
 
       ////////////
 
@@ -41,20 +47,29 @@
          }
 
          SessionService.setPageLoaded(false);
+         var encryptedPassword = md5.createHash(vm.password.password);
 
-         if (vm.passwords.hasOwnProperty(vm.password.password)) {
+         if (vm.encryptedPasswords.hasOwnProperty(encryptedPassword)) {
             AlertsService.addAlert('alert', gettextCatalog.getString('Password {{password}} already exists.', {password: vm.password.password}));
             SessionService.setPageLoaded(true);
             return;
          }
 
-         vm.passwords[vm.password.password] = {
-            password: vm.password.password,
+         vm.encryptedPasswords[encryptedPassword] = {
+            password: encryptedPassword,
             type: PASSWORD_TYPE.getAll()[vm.password.type],
             text: vm.password.text
          };
 
-         vm.passwords.$save().then(function () {
+         vm.decryptedPasswords[encryptedPassword] = {
+            encrypted: encryptedPassword,
+            decrypted: vm.password.password
+         };
+
+         $q.all([
+            vm.encryptedPasswords.$save(),
+            vm.decryptedPasswords.$save()
+         ]).then(function () {
             AlertsService.addAlert('success', gettextCatalog.getString('Password {{password}} was added.', {password: vm.password.password}));
             SessionService.setPageLoaded(true);
             addPasswordCancel();
@@ -62,14 +77,36 @@
       }
 
       function deletePassword(password) {
-         SessionService.setPageLoaded(false);
+         var decryptedPassword = vm.decryptedPasswords[password].decrypted;
 
-         delete vm.passwords[password];
+         ModalService.openConfirmDeletionModal(decryptedPassword).result.then(function (confirmation) {
+            if (confirmation) {
+               SessionService.setPageLoaded(false);
 
-         vm.passwords.$save().then(function() {
-            AlertsService.addAlert('success', gettextCatalog.getString('Password {{password}} was deleted.', {password: password}));
-            SessionService.setPageLoaded(true);
-         })
+               delete vm.encryptedPasswords[password];
+               delete vm.decryptedPasswords[password];
+
+               $q.all([
+                  vm.encryptedPasswords.$save(),
+                  vm.decryptedPasswords.$save()
+               ]).then(function () {
+                  AlertsService.addAlert('success', gettextCatalog.getString('Password {{password}} was deleted.', {password: decryptedPassword}));
+                  SessionService.setPageLoaded(true);
+               })
+            }
+         });
+      }
+
+      function getEncryptedPassword(encryptedPassword) {
+         return vm.encryptedPasswords[encryptedPassword].password;
+      }
+
+      function getPasswordType(encryptedPassword) {
+         return vm.encryptedPasswords[encryptedPassword].type;
+      }
+
+      function getPasswordText(encryptedPassword) {
+         return vm.encryptedPasswords[encryptedPassword].text;
       }
 
       ////////////

@@ -59,7 +59,7 @@ div.panel.form {
    background-color: scale_color($body-bg, $lightness: -50%);
    box-shadow: 0 0.5rem 0.8rem 0.5rem rgba(0, 0, 0, 0.2);
 
-   h1 {
+   h2 {
       padding-bottom: $form-spacing*1.5;
    }
 }
@@ -89,10 +89,18 @@ div.panel.form {
    margin: 0 !important;
 }
 
-.alert {
-   color: $alert-color;
+.no-padding {
+   padding: 0 !important;
 }
 
-.success {
-   color: $success-color;
+.alert-color {
+   color: $alert-color !important;
+}
+
+.success-color {
+   color: $success-color !important;
+}
+
+.primary-color {
+   color: $primary-color !important;
 }
