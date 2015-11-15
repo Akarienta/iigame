@@ -97,7 +97,7 @@ module.exports = (grunt) ->
       connect:
          options:
             port: 9000
-            hostname: 'localhost'
+            hostname: '0.0.0.0'
             livereload: true
          livereload:
             options:
@@ -105,7 +105,7 @@ module.exports = (grunt) ->
                middleware: (connect) ->
                   middlewares = []
 
-                  middlewares.push connect.static '.tmp', {hidden: true}
+                  middlewares.push connect.static '.tmp', {dotfiles: 'allow'}
                   middlewares.push connect().use '/lib', connect.static './lib'
                   middlewares.push connect().use '/bower_components', connect.static './bower_components'
 
@@ -175,8 +175,6 @@ module.exports = (grunt) ->
                   cwd: '<%= config.app %>',
                   src: ['**/*.json', '!config.example.json', '!config.json'],
                   dest: '<%= config.dist %>'
-                  rename: (dest, src) ->
-                     dest + '/' + src.replace('.example', '')
                   dot: true
                }
                {

@@ -272,7 +272,7 @@ $code-border-color: scale-color($code-background-color, $lightness: 30%);
 // We use these to style anchors
 // $anchor-text-decoration: none;
 // $anchor-text-decoration-hover: none;
-// $anchor-font-color: $primary-color;
+$anchor-font-color: $primary-color;
 // $anchor-font-color-hover: scale-color($anchor-font-color, $lightness: -14%);
 
 // We use these to style the <hr> element
@@ -1132,7 +1132,7 @@ $callout-panel-bg: scale-color($primary-color, $lightness: -70%);
 // $reveal-overlay-bg-old: $black;
 
 // We use these to control the style of the modal itself.
-// $reveal-modal-bg: $white;
+$reveal-modal-bg: $body-bg;
 // $reveal-position-top: rem-calc(100);
 // $reveal-default-width: 80%;
 // $reveal-max-width: $row-width;
@@ -1143,7 +1143,7 @@ $callout-panel-bg: scale-color($primary-color, $lightness: -70%);
 // $reveal-close-font-size: rem-calc(40);
 // $reveal-close-top: rem-calc(10);
 // $reveal-close-side: rem-calc(22);
-// $reveal-close-color: $base;
+$reveal-close-color: $anchor-font-color;
 // $reveal-close-weight: $font-weight-bold;
 
 // We use this to set the default radius used throughout the core.
@@ -1300,7 +1300,7 @@ $table-even-row-bg: $charcoal;
 // These control the table cell border style
 // $table-border-style: solid;
 // $table-border-size: 1px;
-$table-border-color: $base;
+$table-border-color: $steel;
 
 // These control the table head styles
 $table-head-bg: $aluminum;

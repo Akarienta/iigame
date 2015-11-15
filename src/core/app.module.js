@@ -11,6 +11,7 @@
          'ngPassword',
          'ngCookies',
          'hljs',
+         'iigame.modal',
          'iigame.error',
          'iigame.constants',
          'iigame.alerts',

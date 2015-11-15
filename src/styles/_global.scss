@@ -15,16 +15,25 @@ table {
    margin-right: auto;
    max-width: initial;
    table-layout: fixed;
+   border-spacing: 0;
+   border-collapse: collapse;
+   border-style: hidden;
+   box-shadow: 0 0 0 rem-calc(1px) $table-head-bg;
 
    th.tools-1 {
       width: rem-calc(45px);
       text-align: center;
+   }
+
+   th, td {
+      border: rem-calc(1px) solid $table-border-color;
    }
 }
 
 .icon {
    margin: 0;
    padding: 0;
+   padding-right: rem-calc(1px);
    width: rem-calc($icon-size);
    height: rem-calc($icon-size);
    line-height: rem-calc($icon-size);
@@ -78,4 +87,12 @@ div.panel.form {
 
 .no-margin {
    margin: 0 !important;
+}
+
+.alert {
+   color: $alert-color;
+}
+
+.success {
+   color: $success-color;
 }

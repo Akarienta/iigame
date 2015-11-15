@@ -18,6 +18,7 @@
          getAuth: getAuth,
          getUsers: getUsers,
          getLogins: getLogins,
+         getPasswords: getPasswords,
          getSecurityUrl: getSecurityUrl,
          areUsersDisabled: areUsersDisabled
       };
@@ -42,6 +43,10 @@
 
       function getLogins() {
          return data.logins;
+      }
+
+      function getPasswords() {
+         return data.passwords;
       }
 
       function areUsersDisabled() {
@@ -75,6 +80,9 @@
             __getFirebaseObject('accounts/users').then(function (users) {
                data.users = users;
             }),
+            __getFirebaseObject('passwords').then(function (passwords) {
+               data.passwords = passwords;
+            }),
             __getRef().then(function (ref) {
                return $firebaseAuth(ref).$waitForAuth().then(function() {
                   return data.auth = $firebaseAuth(ref);
@@ -86,7 +94,8 @@
       function __areDataLoaded() {
          return $q.all([
             data.users.$loaded(),
-            data.logins.$loaded()
+            data.logins.$loaded(),
+            data.passwords.$loaded()
          ])
       }
 

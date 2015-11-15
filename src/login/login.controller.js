@@ -157,7 +157,7 @@
 
          switch (error.code) {
             case 'INVALID_USER':
-               msg = gettextCatalog.getString('E-mail {{mail}} doesn\'t exist.', {mail: vm.reset.mail});
+               msg = gettextCatalog.getString('User with e-mail {{mail}} doesn\'t exist.', {mail: vm.reset.mail});
                __clearResetForm();
                break;
          }

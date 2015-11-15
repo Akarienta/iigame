@@ -13,12 +13,12 @@
       <div class="panel radius" ng-show="!vm.addingUser" translate>
          <p ng-if="vm.areUsersDisabled" class="security-info">
             <i class="fi-info"></i>Users addition was disabled in Firebase. To allow it, please login into <a href="{{vm.getFirebaseSecurityUrl()}}" target="_blank">your Firebase</a>
-            and change security rules.
+            and change security rules by copying and pasting the code below.
          </p>
 
          <p ng-if="!vm.areUsersDisabled" class="security-info" translate>
             <i class="fi-alert"></i>Don't forget to disable users addition when you are done. You can do it in <a href="{{vm.getFirebaseSecurityUrl()}}" target="_blank">your
-            Firebase</a> by changing security rules.
+            Firebase</a> by changing security rules by copying and pasting the code below.
          </p>
 
          <a ng-click="vm.changeRulesVisibility()">{{vm.areRulesShown ? ('Hide code snippet'|translate) : ('Show code snippet'|translate)}}</a>
@@ -42,11 +42,11 @@
                   <input name="login" ng-model="vm.newUser.login" type="text" placeholder="{{'Login' | translate}}" class="radius" required
                          ng-class="{'error': (vm.userForm.$submitted || vm.userForm.login.$dirty) && vm.userForm.login.$invalid}" ng-pattern="/^[a-z]+$/"/>
 
-               <span ng-messages="vm.userForm.login.$error" ng-if="vm.userForm.$submitted || vm.userForm.login.$dirty"
-                     ng-messages-multiple="ng-messages-multiple">
-               <small class="error" ng-message="required" translate>This field is mandatory.</small>
-               <small class="error" ng-message="pattern" translate>Only small letters are allowed.</small>
-            </span>
+                  <div ng-messages="vm.userForm.login.$error" ng-if="vm.userForm.$submitted || vm.userForm.login.$dirty"
+                        ng-messages-multiple="ng-messages-multiple">
+                     <small class="error" ng-message="required" translate>This field is mandatory.</small>
+                     <small class="error" ng-message="pattern" translate>Only small letters are allowed.</small>
+                  </div>
                </div>
 
                <!-- role -->
@@ -54,11 +54,11 @@
                   <div ng-class="{'error': (vm.userForm.$submitted || vm.userForm.role.$dirty) && vm.userForm.role.$invalid}">
                      <div class="inline">
                         <input type="radio" name="role" value="dom" id="dom" ng-model="vm.newUser.role" ng-value="0" required/>
-                        <label for="dom">dom</label>
+                        <label for="dom" translate>dom</label>
                      </div>
                      <div class="inline">
                         <input type="radio" name="role" value="sub" id="sub" ng-model="vm.newUser.role" ng-value="1" required/>
-                        <label for="sub">sub</label>
+                        <label for="sub" translate>sub</label>
                      </div>
                   </div>
                   <div ng-messages="vm.userForm.role.$error" ng-if="vm.userForm.$submitted || vm.userForm.role.$dirty"
@@ -120,7 +120,11 @@
    </div>
 
    <!-- users -->
-   <div class="small-12 column" ng-hide="vm.users.$value === null">
+   <div class="small-12 column" ng-show="vm.users.$value === null">
+      <div class="panel radius" translate>No password is defined.</div>
+   </div>
+
+   <div class="small-12 column"  ng-hide="vm.users.$value === null">
       <table>
          <thead>
             <tr>
