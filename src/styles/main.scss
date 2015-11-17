@@ -1,6 +1,9 @@
+$fi-path: '../fonts';
+
 // foundation styles
 @import 'settings';
 @import 'foundation';
+@import 'foundation-icons';
 
 // app styles
 @import 'global';

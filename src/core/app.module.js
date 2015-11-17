@@ -32,8 +32,8 @@
    /** @ngInject */
    function config($urlRouterProvider) {
       $urlRouterProvider
-         .when('', '/check')
-         .otherwise('/404');
+         .when('', '/home')
+         .otherwise('/error/404');
    }
 
    /** @ngInject */

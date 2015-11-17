@@ -28,7 +28,7 @@ module.exports = (grunt) ->
          all:
             expand: true
             src: '<%= config.temp %>/index.html'
-            exclude: 'foundation.css'
+            exclude: ['foundation.css', 'foundation-icons.css']
             ignorePath: /\.\.\//
 
       html2js:
@@ -61,7 +61,8 @@ module.exports = (grunt) ->
             options:
                style: 'expanded'
                loadPath: [
-                  'bower_components/foundation/scss'
+                  'bower_components/foundation/scss',
+                  'bower_components/foundation-icon-fonts/',
                ]
             files: [
                expand: true
@@ -122,7 +123,7 @@ module.exports = (grunt) ->
          htmlAndJson:
             options:
                dot: true
-            files: ['<%= config.app %>/**/*.{html,json}', '!<%= config.app %>/index.html', '!<%= config.app %>/config.example.json']
+            files: ['<%= config.app %>/**/*.{html,json}', '!<%= config.app %>/index.html', '!<%= config.app %>/firebase.example.json']
             tasks: 'copy:dev'
          js:
             files: '<%= config.app %>/**/*.js'
@@ -164,7 +165,7 @@ module.exports = (grunt) ->
                   # config
                   expand: true,
                   cwd: '<%= config.app %>',
-                  src: 'config.example.json',
+                  src: 'firebase.example.json',
                   dest: '<%= config.dist %>'
                   rename: (dest, src) ->
                      dest + '/' + src.replace('.example', '')
@@ -173,7 +174,7 @@ module.exports = (grunt) ->
                   # jsons
                   expand: true,
                   cwd: '<%= config.app %>',
-                  src: ['**/*.json', '!config.example.json', '!config.json'],
+                  src: ['**/*.json', '!firebase.example.json', '!firebase.json'],
                   dest: '<%= config.dist %>'
                   dot: true
                }
@@ -199,6 +200,13 @@ module.exports = (grunt) ->
                   dest: '<%= config.dist %>/fonts',
                   src: 'foundation-icon-fonts/*.{ttf,eot,woff,svg}'
                }
+               {
+                  # favicon
+                  expand: true,
+                  cwd: '<%= config.app %>/favicon',
+                  dest: '<%= config.dist %>/favicon',
+                  src: '*.*'
+               }
             ]
          dev:
             files: [
@@ -207,7 +215,7 @@ module.exports = (grunt) ->
                   expand: true,
                   flatten: true,
                   cwd: '<%= config.app %>',
-                  src: ['**/*.{html,json}', '!index.html', '!config.example.json'],
+                  src: ['**/*.{html,json}', '!index.html', '!firebase.example.json'],
                   dest: '<%= config.temp %>'
                   dot: true
                }
@@ -225,6 +233,13 @@ module.exports = (grunt) ->
                   cwd: 'bower_components',
                   dest: '<%= config.temp %>/fonts',
                   src: 'foundation-icon-fonts/*.{ttf,eot,woff,svg}'
+               }
+               {
+                  # favicon
+                  expand: true,
+                  cwd: '<%= config.app %>/favicon',
+                  dest: '<%= config.temp %>/favicon',
+                  src: '*.*'
                }
             ]
 

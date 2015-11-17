@@ -8,7 +8,7 @@
    /** @ngInject */
    function ConfigService($http) {
 
-      var CONFIG_FILE = 'config.json';
+      var CONFIG_FILE = 'firebase.json';
       var service = {
          getLanguage: getLanguage,
          getFireBaseAppName: getFireBaseAppName,
@@ -24,7 +24,7 @@
       }
 
       function getFireBaseAppName() {
-         return __getParam('firebaseAppName');
+         return __getParam('firebase');
       }
 
       function getFile() {

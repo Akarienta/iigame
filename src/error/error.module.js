@@ -8,14 +8,14 @@
    /** @ngInject */
    function config($stateProvider) {
       $stateProvider
-         .state('403', {
-            url: '/403',
+         .state('error', {
+            url: '/error/403',
             templateUrl: 'error.html',
             controller: 'ErrorCtrl',
             controllerAs: 'vm'
          })
          .state('404', {
-            url: '/404',
+            url: '/error/404',
             templateUrl: 'error.html',
             controller: 'ErrorCtrl',
             controllerAs: 'vm'

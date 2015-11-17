@@ -1,5 +1,0 @@
-{
-   "firebase": "iigame-demo",
-   "public": "dist",
-   "rules": "dist/.security_allowed.json"
-}
