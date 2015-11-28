@@ -6,7 +6,7 @@
       .service('FirebaseService', FirebaseService);
 
    /** @ngInject */
-   function FirebaseService($q, $firebaseAuth, $firebaseObject, ConfigService) {
+   function FirebaseService($q, $log, $firebaseAuth, $firebaseObject, ConfigService) {
 
       var loadedPromise = $q.defer();
       var data = {
@@ -64,6 +64,9 @@
       }
 
       function reloadData() {
+         data = {
+            areUsersDisabled: false
+         };
          loadedPromise = $q.defer();
 
          __init();
@@ -80,7 +83,14 @@
 
       function __getFirebaseObject(path) {
          return __getRef().then(function (ref) {
-            return $firebaseObject(ref.child(path));
+            var deffered = $q.defer();
+            ref.child(path).on('value', function () {
+               deffered.resolve($firebaseObject(ref.child(path)));
+            }, function () {
+               $log.debug('FirebaseService.getFirebaseObject() - The read on path "' + path + '" failed.');
+               deffered.resolve(null);
+            });
+            return deffered.promise;
          });
       }
 
@@ -111,14 +121,10 @@
 
       function __areDataLoaded() {
          return $q.all([
-            data.users.$loaded().catch(function () {
-               data.users = null;
-            }),
-            data.logins.$loaded(),
-            data.encryptedPasswords.$loaded(),
-            data.decryptedPasswords.$loaded().catch(function () {
-               data.decryptedPasswords = null;
-            })
+            data.users && data.users.$loaded(),
+            data.logins && data.logins.$loaded(),
+            data.encryptedPasswords && data.encryptedPasswords.$loaded(),
+            data.decryptedPasswords && data.decryptedPasswords.$loaded()
          ])
       }
 

@@ -27,7 +27,7 @@
 
                      <div ng-messages="vm.changeMailForm.password.$error" ng-if="vm.changeMailForm.$submitted || vm.changeMailForm.password.$dirty"
                           ng-messages-multiple="ng-messages-multiple">
-                        <small class="error" ng-message="required">This field is mandatory.</small>
+                        <small class="error" ng-message="required">{{'This field is mandatory.'|translate}}</small>
                      </div>
                   </div>
                   <!-- new mail -->
@@ -38,8 +38,8 @@
 
                      <div ng-messages="vm.changeMailForm.mail.$error" ng-if="vm.changeMailForm.$submitted || vm.changeMailForm.mail.$dirty"
                           ng-messages-multiple="ng-messages-multiple">
-                        <small class="error" ng-message="required" translate>This field is mandatory.</small>
-                        <small class="error" ng-message="email" translate>The text isn't a valid e-mail.</small>
+                        <small class="error" ng-message="required">{{'This field is mandatory.'|translate}}</small>
+                        <small class="error" ng-message="email">{{'The text isn\'t a valid e-mail.'|translate}}</small>
                      </div>
                   </div>
                   <!-- buttons -->
@@ -72,7 +72,7 @@
 
                      <div ng-messages="vm.changePasswdForm.oldPassword.$error" ng-if="vm.changePasswdForm.$submitted || vm.changePasswdForm.oldPassword.$dirty"
                           ng-messages-multiple="ng-messages-multiple">
-                        <small class="error" ng-message="required">This field is mandatory.</small>
+                        <small class="error" ng-message="required">{{'This field is mandatory.'|translate}}</small>
                      </div>
                   </div>
                   <!-- new -->
@@ -83,9 +83,9 @@
 
                      <div ng-messages="vm.changePasswdForm.newPassword.$error" ng-if="vm.changePasswdForm.$submitted || vm.changePasswdForm.newPassword.$dirty"
                           ng-messages-multiple="ng-messages-multiple">
-                        <small class="error" ng-message="required" translate>This field is mandatory.</small>
-                        <small class="error" ng-message="pattern" translate>Only letters and digits are allowed.</small>
-                        <small class="error" ng-message="minlength" translate>Minimum length is 6.</small>
+                        <small class="error" ng-message="required">{{'This field is mandatory.'|translate}}</small>
+                        <small class="error" ng-message="pattern">{{'Only letters and digits are allowed.'|translate}}</small>
+                        <small class="error" ng-message="minlength">{{'Minimum length is 6.'|translate}}</small>
                      </div>
                   </div>
                   <!-- new match -->
@@ -97,8 +97,8 @@
                      <div ng-messages="vm.changePasswdForm.confirmPassword.$error"
                           ng-if="vm.changePasswdForm.$submitted || vm.changePasswdForm.confirmPassword.$dirty"
                           ng-messages-multiple="ng-messages-multiple">
-                        <small class="error" ng-message="required">This field is mandatory.</small>
-                        <small class="error" ng-message="passwordMatch">Your passwords don't match.</small>
+                        <small class="error" ng-message="required">{{'This field is mandatory.'|translate}}</small>
+                        <small class="error" ng-message="passwordMatch">{{'Your passwords don\'t match.'|translate}}</small>
                      </div>
                   </div>
                   <!-- buttons -->
@@ -136,7 +136,7 @@
 
                      <div ng-messages="vm.deleteUserForm.password.$error" ng-if="vm.deleteUserForm.$submitted || vm.deleteUserForm.password.$dirty"
                           ng-messages-multiple="ng-messages-multiple">
-                        <small class="error" ng-message="required" translate>This field is mandatory.</small>
+                        <small class="error" ng-message="required">{{'This field is mandatory.'|translate}}</small>
                      </div>
                   </div>
                   <!-- buttons -->

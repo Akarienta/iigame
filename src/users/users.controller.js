@@ -31,6 +31,7 @@
       vm.getAllowedJSON = getAllowedJSON;
       vm.getDisabledJSON = getDisabledJSON;
       vm.changeRulesVisibility = changeRulesVisibility;
+      vm.getSnippetMsg = getSnippetMsg;
 
       ////////////
 
@@ -81,6 +82,10 @@
 
       function changeRulesVisibility() {
          vm.areRulesShown = !vm.areRulesShown;
+      }
+
+      function getSnippetMsg() {
+         return vm.areRulesShown ? gettextCatalog.getString('Hide code snippet') : gettextCatalog.getString('Show code snippet');
       }
 
       ////////////

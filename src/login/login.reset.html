@@ -8,8 +8,8 @@
 
       <div ng-messages="vm.resetForm.mail.$error" ng-if="vm.resetForm.$submitted || vm.resetForm.mail.$dirty"
            ng-messages-multiple="ng-messages-multiple">
-         <small class="error" ng-message="required" translate>This field is mandatory.</small>
-         <small class="error" ng-message="email" translate>The text isn't a valid e-mail.</small>
+         <small class="error" ng-message="required">{{'This field is mandatory.'|translate}}</small>
+         <small class="error" ng-message="email">{{'The text isn\'t a valid e-mail.'|translate}}</small>
       </div>
    </div>
    <div class="small-6 column">

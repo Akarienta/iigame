@@ -13,7 +13,10 @@
       __loadUser(savedAuthData);
 
       FirebaseService.getAuth().$onAuth(function (authData) {
-         if (authData === savedAuthData) {
+         //console.log(authData);
+         //console.log(savedAuthData);
+
+         if (__areAuthDataSame(authData, savedAuthData)) {
             return;
          }
 
@@ -61,7 +64,7 @@
             return true;
          }
 
-         return user !== null && ACCESS_RIGHTS[module].indexOf(user.role) !== -1;
+         return user && ACCESS_RIGHTS[module].indexOf(user.role) !== -1;
       }
 
       function checkAccess(module) {
@@ -88,6 +91,22 @@
          }
 
          user = userData;
+      }
+
+      function __areAuthDataSame(authData1, authData2) {
+         if (authData1 === null && authData2 === null) {
+            return true;
+         }
+
+         if ((authData1 === null && authData2 !== null)) {
+            return false;
+         }
+
+         if ((authData2 === null && authData1 !== null)) {
+            return false;
+         }
+
+         return authData1.uid === authData2.uid;
       }
 
    }

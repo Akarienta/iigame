@@ -29,6 +29,7 @@
       vm.changeTemplate = changeTemplate;
       vm.checkPassword = checkPassword;
       vm.hasAlerts = hasAlerts;
+      vm.getResultMsg = getResultMsg;
 
       changeTemplate(vm.templates.login, true);
 
@@ -39,12 +40,12 @@
       }
 
       function changeTemplate(template, init) {
-         AlertsService.cleanAlerts();
          __clear();
          __loadCookie();
          vm.template = template;
 
          if (!init) {
+            AlertsService.cleanAlerts();
             __fakeLoadPage();
          }
       }
@@ -55,7 +56,7 @@
          }
 
          if (!FirebaseService.getLogins().hasOwnProperty(vm.check.login)) {
-            AlertsService.addAlert('alert', gettextCatalog.getString('Employer {{user}} doesn\'t exists.', {user: vm.check.login}));
+            AlertsService.addAlert('alert', gettextCatalog.getString('Employer {{user}} doesn\'t exist.', {user: vm.check.login}));
             __clearLogin();
             __fakeLoadPage();
             return;
@@ -80,6 +81,10 @@
 
       function hasAlerts() {
          return AlertsService.getAlerts().length !== 0;
+      }
+
+      function getResultMsg() {
+         return vm.success ? gettextCatalog.getString('SUCCESS') : gettextCatalog.getString('FAILURE');
       }
 
       ////////////

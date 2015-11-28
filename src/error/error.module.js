@@ -8,7 +8,7 @@
    /** @ngInject */
    function config($stateProvider) {
       $stateProvider
-         .state('error', {
+         .state('403', {
             url: '/error/403',
             templateUrl: 'error.html',
             controller: 'ErrorCtrl',

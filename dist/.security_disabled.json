@@ -1,0 +1,28 @@
+{
+   "rules": {
+      "accounts": {
+         "logins": {
+            ".read": true,
+            "$login": {
+               ".write": "auth !== null && root.child('accounts').child('users').child(auth.uid).child('login').val() === $login"
+            }
+         },
+         "users": {
+            ".read": "auth !== null",
+            "$uid": {
+               ".write": "auth !== null && auth.uid === $uid"
+            }
+         }
+      },
+      "passwords": {
+         "encrypted": {
+            ".read": true,
+            ".write": "auth !== null && root.child('accounts').child('users').child(auth.uid).child('role').val() === 'sub'"
+         },
+         "decrypted": {
+            ".read": "auth !== null && root.child('accounts').child('users').child(auth.uid).child('role').val() === 'sub'",
+            ".write": "auth !== null && root.child('accounts').child('users').child(auth.uid).child('role').val() === 'sub'"
+         }
+      }
+   }
+}

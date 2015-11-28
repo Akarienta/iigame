@@ -1,6 +1,7 @@
 bower_components
 node_modules
 src/firebase.json
+src/po/*.mo
 .idea
 .sass-cache
 .tmp

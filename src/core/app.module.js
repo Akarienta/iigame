@@ -30,19 +30,22 @@
       .run(run);
 
    /** @ngInject */
-   function config($urlRouterProvider) {
+   function config($urlRouterProvider, $logProvider) {
       $urlRouterProvider
          .when('', '/home')
          .otherwise('/error/404');
+
+      $logProvider.debugEnabled(false);
    }
 
    /** @ngInject */
-   function run($rootScope, ConfigService, AlertsService, SessionService, gettextCatalog) {
+   function run($log, $rootScope, ConfigService, AlertsService, SessionService, gettextCatalog) {
       ConfigService.getLanguage().then(function (lang) {
          gettextCatalog.setCurrentLanguage(lang);
       });
 
       $rootScope.$on('$stateChangeStart', function () {
+         $log.debug('AppModule.run() - State chnaged.');
          SessionService.setPageLoaded(false);
          AlertsService.cleanAlerts();
       });

@@ -6,7 +6,7 @@
       .controller('LoginCtrl', LoginCtrl);
 
    /** @ngInject */
-   function LoginCtrl($rootScope, $cookies, AuthService, FirebaseService, AlertsService, SessionService, gettextCatalog, MODULE) {
+   function LoginCtrl($rootScope, $cookies, $state, AuthService, FirebaseService, AlertsService, SessionService, gettextCatalog, MODULE) {
 
       AuthService.checkAccess(MODULE.LOGIN);
 
@@ -15,7 +15,20 @@
 
       $rootScope.$on('userUpdated', function () {
          vm.user = AuthService.getUser();
-         changeTemplate(vm.user === null ? vm.templates.login : vm.templates.logout);
+
+         if ($state.current.name !== 'login') {
+            return;
+         }
+
+         if (vm.user === null) {
+            changeTemplate(vm.templates.login);
+            AlertsService.addAlert('success', gettextCatalog.getString('You have been successfully logged out.'));
+         } else {
+            AlertsService.cleanAlerts();
+            AlertsService.notClearOnStateChange();
+            AlertsService.addAlert('success', gettextCatalog.getString('User {{login}} has been successfully logged in.', {login: vm.user.login}));
+            $state.go('check');
+         }
       });
 
       // template types

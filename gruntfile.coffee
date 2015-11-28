@@ -297,14 +297,14 @@ module.exports = (grunt) ->
             files:
                '<%= config.app %>/po/template.pot': [
                   '<%= config.app %>/**/*.html'
-                  '<%= config.app %>**/*.js'
+                  '<%= config.app %>/**/*.js'
                ]
 
       # compiles translation files
       nggettext_compile:
          all:
             files:
-               '<%= config.app %>/translations.js': [
+               '<%= config.app %>/core/translations.js': [
                   '<%= config.app %>/po/*.po'
                ]
 

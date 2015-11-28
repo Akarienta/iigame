@@ -6,7 +6,7 @@
       .controller('CoreCtrl', CoreCtrl);
 
    /** @ngInject */
-   function CoreCtrl($q, FirebaseService, SecurityRulesService, SessionService) {
+   function CoreCtrl($q, FirebaseService, SecurityRulesService, AlertsService, SessionService) {
 
       var vm = this;
 
@@ -27,6 +27,7 @@
 
       function __init() {
          $q.all([
+            AlertsService.getLoadedPromise(),
             FirebaseService.getLoadedPromise(),
             SecurityRulesService.getLoadedPromise()
          ]).then(function () {

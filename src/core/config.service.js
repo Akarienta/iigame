@@ -12,6 +12,7 @@
       var service = {
          getLanguage: getLanguage,
          getFireBaseAppName: getFireBaseAppName,
+         getAlertsHistory: getAlertsHistory,
          getFile: getFile
       };
 
@@ -25,6 +26,10 @@
 
       function getFireBaseAppName() {
          return __getParam('firebase');
+      }
+
+      function getAlertsHistory() {
+         return __getParam('alertsHistory');
       }
 
       function getFile() {

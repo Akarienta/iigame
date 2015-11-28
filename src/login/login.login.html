@@ -1,15 +1,15 @@
 <div class="small-12 column text-center">
-   <h2 translate translate-comment="headline">Login</h2>
+   <h2 translate translate-comment="headline">Log In</h2>
 </div>
 <form name="vm.loginForm" novalidate>
    <div class="small-12 column">
-      <input type="text" name="login" placeholder="{{'Login' | translate}}" class="radius" ng-model="vm.auth.login" required
+      <input type="text" name="login" placeholder="{{'Username' | translate}}" class="radius" ng-model="vm.auth.login" required
              ng-class="{'error': (vm.loginForm.$submitted || vm.loginForm.login.$dirty) && vm.loginForm.login.$invalid}" ng-pattern="/^[a-z]+$/">
 
       <div ng-messages="vm.loginForm.login.$error" ng-if="vm.loginForm.$submitted || vm.loginForm.login.$dirty"
            ng-messages-multiple="ng-messages-multiple">
-         <small class="error" ng-message="required">This field is mandatory.</small>
-         <small class="error" ng-message="pattern" translate>Only small letters are allowed.</small>
+         <small class="error" ng-message="required">{{'This field is mandatory.'|translate}}</small>
+         <small class="error" ng-message="pattern">{{'Only small letters are allowed.'|translate}}</small>
       </div>
    </div>
    <div class="small-12 column">
@@ -18,12 +18,12 @@
 
       <div ng-messages="vm.loginForm.password.$error" ng-if="vm.loginForm.$submitted || vm.loginForm.password.$dirty"
            ng-messages-multiple="ng-messages-multiple">
-         <small class="error" ng-message="required">This field is mandatory.</small>
+         <small class="error" ng-message="required">{{'This field is mandatory.'|translate}}</small>
       </div>
    </div>
    <div class="small-12 column">
       <input type="checkbox" name="rememberLogin" id="rememberLogin" ng-model="vm.rememberLogin" ng-value="true"/>
-      <label for="rememberLogin" translate>Remember my login</label>
+      <label for="rememberLogin" translate>Remember my username</label>
    </div>
    <div class="small-12 column">
       <button type="submit" class="expand radius" ng-click="vm.login()" translate>Submit</button>

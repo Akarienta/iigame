@@ -6,7 +6,7 @@
       .controller('SettingsCtrl', SettingsCtrl);
 
    /** @ngInject */
-   function SettingsCtrl($q, $state, AuthService, SessionService, FirebaseService, AlertsService, gettextCatalog, MODULE) {
+   function SettingsCtrl($q, $state, $firebaseObject, AuthService, SessionService, FirebaseService, AlertsService, gettextCatalog, MODULE) {
 
       AuthService.checkAccess(MODULE.SETTINGS);
 
@@ -67,7 +67,7 @@
             password: vm.mail.password
          })
             .then(__changeLoginMetadata)
-            .then(function() {
+            .then(function () {
                AuthService.setMail(vm.mail.new);
                AlertsService.addAlert('success', gettextCatalog.getString('E-mail for user {{login}} has been successfully changed.', {login: AuthService.getUser().login}));
                __clearChangeMailForm();
@@ -91,7 +91,7 @@
             oldPassword: vm.password.old,
             newPassword: vm.password.new
          })
-            .then(function() {
+            .then(function () {
                AlertsService.addAlert('success', gettextCatalog.getString('Password for user {{login}} has been successfully changed.', {login: AuthService.getUser().login}));
                __clearChangePasswordForm();
             })
@@ -154,21 +154,17 @@
                AlertsService.cleanAlerts();
                AlertsService.notClearOnStateChange();
                AlertsService.addAlert('success', gettextCatalog.getString('User {{login}} has been successfully deleted.', {login: login}));
+               $state.go('check');
                return true;
             })
             .then(__deleteUserMetadata)
-            .then(__deleteUserCredentials)
-            .then($state.go('check'));
+            .then(__deleteUserCredentials);
       }
 
       function __deleteUserMetadata() {
-         var users = FirebaseService.getUsers();
-         var logins = FirebaseService.getLogins();
-
-         delete users[AuthService.getUser().uid];
-         delete logins[AuthService.getUser().login];
-
-         return $q.all([users.$save(), logins.$save()]);
+         return $q.when()
+            .then($firebaseObject(FirebaseService.getLogins().$ref().child(AuthService.getUser().login)).$remove())
+            .then($firebaseObject(FirebaseService.getUsers().$ref().child(AuthService.getUser().uid)).$remove());
       }
 
       function __deleteUserCredentials() {

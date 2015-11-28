@@ -1,6 +1,7 @@
 {
    "firebase": "",
-   "language": "",
+   "language": "en",
+   "alertsHistory": false,
    "public": ".",
    "rules": ".security_allowed.json"
 }
