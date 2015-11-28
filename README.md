@@ -48,6 +48,7 @@ Installation is simple and doesn't require any technical knowledge or payment. E
 
 1. You need a Firebase account. If you don't have one you can create it for free [here](https://www.firebase.com/signup) (Google account is required).
 1. Create new Firebase app on your [dashboard](https://www.firebase.com/account). You can use whatever name or URL you wish. If you see some error, please try another URL - it has to be unique worldwidely. You will use your Firebase URL again during the installation.
+1. Go to **Dashboard > Login & Auth** of your new Firebase app and  check an option **Enable Email & Password Authentication**.
 1. If you don't have installed [Node.js](https://nodejs.org) yet, do it now. Don't forget to add `npm` on `PATH` during the installation if you are using Windows. 
 1. Open your terminal or command line and install Firebase Tools by command `npm install -g firebase-tools`. It can take some time to start installation. If you see the error saying that command npm hasn't been found you probably didn't add `npm` on the system `PATH`. Fix it or reinstall Node.js in this case.
 1. Download I&I Game files. All of them are placed in `dist` folder on this web and on [releases page](https://github.com/akarienta/iigame/releases) ([download the last release now](https://github.com/akarienta/iigame/releases/download/1.0.0/iigame.zip)).
