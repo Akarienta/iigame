@@ -50,7 +50,7 @@ Installation is simple and doesn't require any technical knowledge or payment. E
 1. Create new Firebase app on your [dashboard](https://www.firebase.com/account). You will use your Firebase app name again during the installation.
 1. If you don't have installed [Node.js](https://nodejs.org) yet, do it now. Don't forget to add `npm` on `PATH` during the installation if you are using Windows. 
 1. Open your terminal or command line and install Firebase Tools by command `npm install -g firebase-tools`. If you see the error saying that command npm hasn't been found you probably didn't add `npm` on the system `PATH`. Fix it or reinstall Node.js in this case.
-1. Download I&I Game files. All of them are placed in `dist` folder on this web.
+1. Download I&I Game files. All of them are placed in `dist` folder on this web and on [releases page](https://github.com/akarienta/iigame/releases) ([download the last release now](https://github.com/akarienta/iigame/releases/download/1.0.0/iigame.zip)).
 1. Open file `firebase.json` and change variable named `firebase` to your own Firebase app name from the step 2.
 *[Optional]* If you are interested you can also change the app language here - it is done by variable `language`. Supported languages are **en** (English) and **cs** (Czech) for now. If you wish to translate the app into another language please write me an e-mail on <akarienta@gmail.com>.
 *[Optional]* You can also setup behaviour of alerts here. If you wish to keep relevant alerts visible until you close them, set a variable `alertsHistory` to `true`. If you keep it as `false`, every new alert overwrites the old one and you see one alert only everytime.
